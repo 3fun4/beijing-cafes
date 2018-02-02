@@ -1,0 +1,24 @@
+
+[
+
+{
+	"position": {"lat":39.895962, "lng":116.393037 },
+	"title": "Soloist Coffee",
+	"id": 1,
+	"address": "中国北京市西城区杨梅竹斜街 "
+},
+{
+	"position": {"lat":39.940845,  "lng":116.399783 },
+	"title": "Soloist Coffee",
+	"id": 2,
+	"address": "中国北京市东城区鼓楼东大街"
+},
+{
+	"position": {"lat":39.983016, "lng":116.494632 },
+	"title": "Soloist Coffee",
+	"id": 3,
+	"address": "中国北京市朝阳区酒仙桥路4号"
+}
+
+
+]

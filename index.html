@@ -4,7 +4,7 @@
       <title>Test toggled left navbar</title>
       <meta name="viewport" content="initial-scale=1.0">
       <meta charset="utf-8">
-      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" crossorigin="anonymous">
+      <link rel="stylesheet" href="vendor/bootstrap-4.0.0/css/bootstrap.min.css">
       <link rel="stylesheet" href="css/app.css">
     </head>
     <body>
@@ -38,17 +38,19 @@
 
     </div>
 
+<a id="link_markers_data" href="data/markers.json"></a>
 
 
 
 
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" crossorigin="anonymous"></script>
+    <script src="vendor/jQuery/jquery-3.2.1.min.js"></script>
+    <script src="vendor/proper/popper.min.js"></script>
+    <script src="vendor/bootstrap-4.0.0/js/bootstrap.min.js"></script>
 
-    <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+    <script defer src="vendor/fontawesome/all.js"></script>
 
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAdyV04KnXdTkVzs-5acrHvr04BKFD96bQ&libraries=places&language=en&callback=initMap" async defer></script>
+    <!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAdyV04KnXdTkVzs-5acrHvr04BKFD96bQ&libraries=places&language=en&callback=initMap" async defer></script> -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAdyV04KnXdTkVzs-5acrHvr04BKFD96bQ&libraries=places&language=en" async defer></script>
     <script src="js/app.js"></script>
     </body>
 </html>
