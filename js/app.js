@@ -35,49 +35,72 @@ var styler = [
 		stylers: [{color: '#AADAFF'}]
 	}
 ];
-var map;
-function initMap() {
-	map = new google.maps.Map(document.getElementById('map'), {
-  		center: {lat: 39.91632, lng: 116.397057},
-  		zoom: 13,
-		zoomControl: true,
-		scaleControl: false,
-		streetViewControl: false,
-		rotateControl: false,
-		fullscreenControl: true,
-		mapTypeControl: false,
-		/*styles: styler*/
-	});
-	//TODO: //map style
-	//map.setMapTypeId(google.maps.MapTypeId.ROADMAP);
-	/*var styledMapType = new google.maps.StyledMapType(styler, {name: 'Styled Map'});
-	map.mapTypes.set('styled_map', styledMapType);
-    map.setMapTypeId('styled_map');*/
-
-	//transit layer
-	// var transitLayer = new google.maps.TransitLayer();
- 	//transitLayer.setMap(map);
-
-map.data.loadGeoJson('marker.json');
+var map = new google.maps.Map(document.getElementById('map'), {
+  mapTypeId: 'terrain',
+  center: {lat: 39.91632, lng: 116.397057},
+  zoom: 11/*,
+  zoomControl: true,
+  scaleControl: false,
+  streetViewControl: false,
+  rotateControl: false,
+  fullscreenControl: true,
+  mapTypeControl: false,
+  styles: styler*/
+});
+function initMap(items) {
 
 
-	var soloist = {lat:39.895962, lng:116.393037 };
-	var marker = new google.maps.Marker({
-		position: soloist,
-		map: map,
-		title: 'Soloist',
-		animation: google.maps.Animation.DROP,
-		id: 1
-	});
-	var infowindow = new google.maps.InfoWindow({
-		content: `title: ${marker.title}, address:'this address'`
-	});
-	marker.addListener('click', function() {
-		infowindow.open(map, marker);
-	});
+/*
 	//var bounds = new google.maps.LatLngBounds();
 	//bounds.extend(marker.position);
-	//map.fitBounds(bounds);
+	//map.fitBounds(bounds);*/
+
+        /*$.each(items, function(index,marker) {
+          var drop = new google.maps.Marker({
+            position: marker.position,
+            map: map,
+            title: marker.title,
+            animation: google.maps.Animation.DROP,
+            id: marker.id
+          });
+          var infowindow = new google.maps.InfoWindow({
+            content: `title: ${marker.title}, address: ${marker.address}`
+          });
+          drop.addListener('click', function() {
+            infowindow.open(map, drop);
+          });
+        });*/
+
+
+var customLayer = new google.maps.Data();
+
+  map.data.addGeoJson(places_GeoJSON);
+  map.data.setStyle({
+    title: '#',
+    //icon: 'https://foursquare.com/img/categories/food/default.png',
+    map: map,
+  });
+
+ /*
+//marker
+map.data.forEach(function(feature) {
+
+console.log(feature.getGeometry().get().lat()+','+feature.getGeometry().get().lng());
+    var point = new google.maps.LatLng({lat: feature.getGeometry().get().lat(), lng:feature.getGeometry().get().lng()});
+    var mark = new google.maps.Marker({
+      position: point,
+      title: '#',
+      //icon: 'https://foursquare.com/img/categories/food/default.png',
+      map: map,
+      draggable: false,
+      animation: google.maps.Animation.DROP
+    });
+  });*/
+
+
+
+
+
 
 	//TODO: //search box
 	var input = document.getElementById('txt_filter');
@@ -86,7 +109,7 @@ map.data.loadGeoJson('marker.json');
     map.addListener('bounds_changed', function() {
       searchBox.setBounds(map.getBounds());
     });
-	var markers = [];
+
     // Listen for the event fired when the user selects a prediction and retrieve
     // more details for that place.
     searchBox.addListener('places_changed', function() {
@@ -96,6 +119,8 @@ map.data.loadGeoJson('marker.json');
         return;
       }
 
+//TODO: //filter
+var markers = [];
       // Clear out the old markers.
       markers.forEach(function(marker) {
         marker.setMap(null);
@@ -145,20 +170,31 @@ $(window).resize(function () {
     $('#map').css('height', (h - offsetTop));
 }).resize();
 
-//
-function printResults(data) {
-      console.log(JSON.stringify(data));
-    }
+/**
+ * Update a map's viewport to fit each geometry in a dataset
+ * @param {google.maps.Map} map The map to adjust
+ */
+function zoom(map) {
+  var bounds = new google.maps.LatLngBounds();
+  map.data.forEach(function(feature) {
+    processPoints(feature.getGeometry(), bounds.extend, bounds);
+  });
+  map.fitBounds(bounds);
+}
 
 //
 $(document).ready(function(){
-      var url = $('#link_markers_data').attr('href');
-      console.log(url);
-      $.getJSON( url, {
+
+      $.getJSON( 'data/markers.json', {
         format: "json",
         crossOrigin: null
       }).done(function( data ) {
         console.log(JSON.stringify(data));
+        //TODO: //load data to left side bar
+        //TODO: //init map
+        initMap(data);
+
       });
+
 
 });
