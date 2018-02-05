@@ -37,8 +37,8 @@ var styler = [
 ];
 var map = new google.maps.Map(document.getElementById('map'), {
   mapTypeId: 'terrain',
-  center: {lat: 39.91632, lng: 116.397057},
-  zoom: 11/*,
+  center: {lat: 39.941165, lng: 116.395888},
+  zoom: 13/*,
   zoomControl: true,
   scaleControl: false,
   streetViewControl: false,
@@ -72,32 +72,66 @@ function initMap(items) {
         });*/
 
 
-var customLayer = new google.maps.Data();
+//var customLayer = new google.maps.Data();
 
   map.data.addGeoJson(places_GeoJSON);
-  map.data.setStyle({
+ /*  map.data.setStyle({
     title: '#',
     //icon: 'https://foursquare.com/img/categories/food/default.png',
     map: map,
   });
+*/
 
- /*
+var $ul_markers = $('#ul_markers');
+$ul_markers.html('');
+
 //marker
 map.data.forEach(function(feature) {
 
-console.log(feature.getGeometry().get().lat()+','+feature.getGeometry().get().lng());
+//TODO: //left list
+$ul_markers.append(`
+  <li class="nav-item">
+    <a class="nav-link active" href="#">${feature.getProperty('title')}</a>
+    <!--<small style="color:#000;padding-left:15px;font-weight:200;">${feature.getProperty('address')}</small>-->
+  </li>
+`);
+
+  console.log(feature.getGeometry().get().lat()+','+feature.getGeometry().get().lng());
     var point = new google.maps.LatLng({lat: feature.getGeometry().get().lat(), lng:feature.getGeometry().get().lng()});
-    var mark = new google.maps.Marker({
+    var marker = new google.maps.Marker({
       position: point,
-      title: '#',
+      title: feature.getProperty('title'),
       //icon: 'https://foursquare.com/img/categories/food/default.png',
       map: map,
       draggable: false,
       animation: google.maps.Animation.DROP
     });
-  });*/
+    var infowindow = new google.maps.InfoWindow({
+      content: `<div class="card box-shadow border-0">
+                  <div class="card-img-top">
+                    <div class="info-card">
+                      <img class="img-fluid" src="${feature.getProperty('url_image')?feature.getProperty('url_image'):""}" >
+                    </div>
+                  </div>
 
+                  <div class="card-body">
+                    <h6>${feature.getProperty('title')}</h6>
 
+                    <p><i class="fa fa-thumbtack"></i> ${feature.getProperty('address')}</p>
+                    <p>
+                      <a target="_blank" href="${feature.getProperty('url_dianping')}" ><img src="http://www.dpfile.com/s/i/app/api/images/accr-logo2.237abf5a477e500c02971f2343b844df.png" style="width:16px;height:16px;" ></a>
+
+                    </p>
+                  </div>
+                </div>
+               `
+    });
+    marker.addListener('click', function() {
+      infowindow.open(map, marker);
+    });
+});
+//data-src="holder.js/100x100?auto=yes&textmode=exact"
+//<i class="fa fa-coffee"></i><i class="fa fa-utensils"></i>
 
 
 
@@ -184,6 +218,7 @@ function zoom(map) {
 
 //
 $(document).ready(function(){
+
 
       $.getJSON( 'data/markers.json', {
         format: "json",
