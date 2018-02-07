@@ -9,10 +9,17 @@ function initMap() {
 
 //fix: map canvas not showing in bootstrap 'main'
 $(window).resize(function () {
+    //set height
     var h = $(window).height(),
         offsetTop = 60; // Calculate the top offset
 
     $('#map').css('height', (h - offsetTop));
+
+    //set width
+    //TODO: //responsive
+    var w = $(window).width();
+    var sidebar_sticky_width = 300;
+    $('#map').css('width', (w-sidebar_sticky_width));
 }).resize();
 
 /**

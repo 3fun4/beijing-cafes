@@ -6,8 +6,8 @@ var map_canvas = {
 
 	styler: [
 		{elementType: 'geometry', stylers: [{color: '#F2F1F0'}]},
-		/*{elementType: 'geometry.fill', stylers: [{color: '#EFEFEF'}]},
-		{elementType: 'geometry.stroke', stylers: [{color: '#DDDFE1'}]},*/
+		{elementType: 'geometry.fill', stylers: [{color: '#EFEFEF'}]},
+		{elementType: 'geometry.stroke', stylers: [{color: '#DDDFE1'}]},
 		{
 			featureType: 'road',
 			elementType: 'geometry.fill',
@@ -40,18 +40,18 @@ var map_canvas = {
 			stylers: [{color: '#AADAFF'}]
 		}
 	],
-	init: function() {console.log('calling init()');
+	init: function() {
 		map =  new google.maps.Map(document.getElementById('map'), {
 						  center: {lat: 39.941165, lng: 116.395888},
-						  zoom: 13,
-          				  mapTypeControl: false/*,
+						  zoom: 13,/*
+          				  mapTypeControl: false,
 						  zoomControl: true,
 						  scaleControl: false,
 						  streetViewControl: false,
 						  rotateControl: false,
 						  fullscreenControl: true,
-						  styles: styler*/
-						});
+						  styles:this.styler*/
+				});
 
 
 	},
@@ -59,15 +59,141 @@ var map_canvas = {
 	 *
      */
 	render: function() {
-console.log('calling render()');
+
+		//load Geo data from JSON file
+		$.ajax({
+		    url: 'data/places_GeoJSON.json',
+		    dataType: 'json',
+		    async: false,
+		    success: function(data) {
+
+				var features = map.data.addGeoJson(data);
+				console.dir(features);
+
+				//set marker style of the Geo data
+				map.data.setStyle(function(feature){
+				    return {
+						    title: feature.getProperty('title'),
+						    //icon: 'https://foursquare.com/img/categories/food/default.png',
+						    map: map
+							};
+				});
+				//append an infoWindow to the marker
+				var inforWindow = new google.maps.InfoWindow();
+				map.data.addListener('click', function(event) {
+				  	var infoHTML = `<div class="card box-shadow border-0">
+				                  <div class="card-img-top">
+				                    <div class="info-card border">
+				                      <img class="img-fluid" src="${event.feature.getProperty('url_image')?event.feature.getProperty('url_image'):""}" >
+				                    </div>
+				                  </div>
+
+				                  <div class="card-body">
+				                    <h6>${event.feature.getProperty('title')}</h6>
+
+				                    <p style="width: 250px;"><i class="fa fa-thumbtack"></i> ${event.feature.getProperty('address')}</p>
+				                    <p>
+				                      <a target="_blank" href="${event.feature.getProperty('url_dianping')}" ><img src="http://www.dpfile.com/s/i/app/api/images/accr-logo2.237abf5a477e500c02971f2343b844df.png" style="width:16px;height:16px;" ></a>
+				                    </p>
+				                  </div>
+				                </div>
+				               `;
+					  inforWindow.setContent(infoHTML);
+					  inforWindow.setPosition(event.feature.getGeometry().get());
+					  // anchor the infowindow on the marker
+					  inforWindow.setOptions({pixelOffset: new google.maps.Size(0,-30)});
+					  inforWindow.open(map);
+				});
+
+				//TODO: //append left list
+				var left_list = $('#left_list');
+				map.data.forEach(function(feature) {
+					console.log('--------------');
+				    console.log(feature.getProperty('title'));
+					left_list.append(`<li class="nav-item"
+										 data-id="${feature.getId()}"
+										 data-title="${feature.getProperty('title')}"
+										 data-lat="${feature.getGeometry().get().lat()}"
+										 data-lng="${feature.getGeometry().get().lng()}"
+									   >
+					                    <a class="nav-link" href="#">${feature.getProperty('title')}</a>
+					                  </li>`);
+				});
+				//bind list item click event
+				$('#left_list li').each(function(index, value) {
+					console.log(index+':'+value);
+					console.log($(this).data());
+					$(this).on('click',function(){
+						console.log($(this).data('title')+':'+$(this).data('lat')+','+$(this).data('lng'));
+						$(this).find('a').toggleClass('active');
+					});
+				});
+
+				//TODO: //input changes
+				$('#zoom-to-area-text').on('input', function() {
+					var val = $(this).val();
+				    console.log(val);
+					var str = 'abCdEfghi';
+					console.log(str.toLowerCase().indexOf(val));
+					if(val && str.indexOf(val)>=0){
+						console.log('has');
+					}
+					if(val){
+						left_list.html('');
+						map.data.forEach(function(feature) {
+							var title = feature.getProperty('title');
+							if(title.toLowerCase().indexOf(val)>=0){
+								console.log(title);
+								left_list.append(`<li class="nav-item"
+										 data-id="${feature.getId()}"
+										 data-title="${feature.getProperty('title')}"
+										 data-lat="${feature.getGeometry().get().lat()}"
+										 data-lng="${feature.getGeometry().get().lng()}"
+									   >
+					                    <a class="nav-link" href="#">${feature.getProperty('title')}</a>
+					                  </li>`);
+
+							}else{
+								//TODO: //set visibility
+								map.data.remove(feature);
+							}
+						});
+					}else{
+						left_list.html('');
+						map.data.forEach(function(feature) {
+							console.log('--------------');
+						    console.log(feature.getProperty('title'));
+							left_list.append(`<li class="nav-item"
+												 data-id="${feature.getId()}"
+												 data-title="${feature.getProperty('title')}"
+												 data-lat="${feature.getGeometry().get().lat()}"
+												 data-lng="${feature.getGeometry().get().lng()}"
+											   >
+							                    <a class="nav-link" href="#">${feature.getProperty('title')}</a>
+							                  </li>`);
+						});
+					}
+
+				});
+			}
+		});
+
+	},
+	/**
+	 *
+     */
+	render1: function() {
+
 		//load Geo data from JSON file
 		map.data.loadGeoJson('data/places_GeoJSON.json');
+
 		//set marker style of the Geo data
 		map.data.setStyle(function(feature){
 		    return {
-		    title: feature.getProperty('title'),
-		    //icon: 'https://foursquare.com/img/categories/food/default.png',
-		    map: map};
+				    title: feature.getProperty('title'),
+				    //icon: 'https://foursquare.com/img/categories/food/default.png',
+				    map: map
+					};
 		});
 		//append an infoWindow to the marker
 		var inforWindow = new google.maps.InfoWindow();
@@ -96,8 +222,8 @@ console.log('calling render()');
 			  inforWindow.open(map);
 		});
 
-	},
 
+	},
 	render2: function() {
 		// map.data.addGeoJson(places_GeoJSON);
 		var $ul_markers = $('#ul_markers');
