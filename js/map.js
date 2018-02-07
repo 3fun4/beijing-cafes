@@ -145,6 +145,7 @@ var map_canvas = {
 							var title = feature.getProperty('title');
 							if(title.toLowerCase().indexOf(val)>=0){
 								console.log(title);
+								feature.setProperty('active',true);
 								left_list.append(`<li class="nav-item"
 										 data-id="${feature.getId()}"
 										 data-title="${feature.getProperty('title')}"
