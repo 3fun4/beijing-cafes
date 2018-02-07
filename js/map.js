@@ -73,7 +73,7 @@ var map_canvas = {
 				//set marker style of the Geo data
 				map.data.setStyle(function(feature){
 				    return {
-							visible: feature.getProperty('active'),
+							visible: feature.getProperty('active'),//for filter
 						    title: feature.getProperty('title'),
 						    //icon: 'https://foursquare.com/img/categories/food/default.png',
 						    map: map
@@ -106,11 +106,9 @@ var map_canvas = {
 					  inforWindow.open(map);
 				});
 
-				//TODO: //append left list
+				//append left list
 				var left_list = $('#left_list');
 				map.data.forEach(function(feature) {
-					console.log('--------------');
-				    console.log(feature.getProperty('title'));
 					left_list.append(`<li class="nav-item"
 										 data-id="${feature.getId()}"
 										 data-title="${feature.getProperty('title')}"
@@ -122,57 +120,32 @@ var map_canvas = {
 				});
 				//bind list item click event
 				$('#left_list li').each(function(index, value) {
-					console.log(index+':'+value);
-					console.log($(this).data());
 					$(this).on('click',function(){
 						console.log($(this).data('title')+':'+$(this).data('lat')+','+$(this).data('lng'));
 						$(this).find('a').toggleClass('active');
 					});
 				});
 
-				//TODO: //input changes
+				//input changes
 				$('#zoom-to-area-text').on('input', function() {
 					var val = $(this).val();
-				    console.log(val);
-					var str = 'abCdEfghi';
-					console.log(str.toLowerCase().indexOf(val));
-					if(val && str.indexOf(val)>=0){
-						console.log('has');
-					}
 					if(val){
-						left_list.html('');
 						map.data.forEach(function(feature) {
 							var title = feature.getProperty('title');
-							if(title.toLowerCase().indexOf(val)>=0){
-								console.log(title);
+							if(title.toLowerCase().indexOf(val.toLowerCase())>=0){
 								feature.setProperty('active',true);
-								left_list.append(`<li class="nav-item"
-										 data-id="${feature.getId()}"
-										 data-title="${feature.getProperty('title')}"
-										 data-lat="${feature.getGeometry().get().lat()}"
-										 data-lng="${feature.getGeometry().get().lng()}"
-									   >
-					                    <a class="nav-link" href="#">${feature.getProperty('title')}</a>
-					                  </li>`);
-
+								$('#left_list li[data-id="'+feature.getId()+'"]').show();
 							}else{
 								//TODO: //set visibility
 								feature.setProperty('active',false);
+								$('#left_list li[data-id="'+feature.getId()+'"]').hide();
 							}
 						});
 					}else{
-						left_list.html('');
 						map.data.forEach(function(feature) {
 							feature.setProperty('active',true);
-							left_list.append(`<li class="nav-item"
-												 data-id="${feature.getId()}"
-												 data-title="${feature.getProperty('title')}"
-												 data-lat="${feature.getGeometry().get().lat()}"
-												 data-lng="${feature.getGeometry().get().lng()}"
-											   >
-							                    <a class="nav-link" href="#">${feature.getProperty('title')}</a>
-							                  </li>`);
 						});
+						$('#left_list li').show();
 					}
 
 				});
@@ -180,6 +153,7 @@ var map_canvas = {
 		});
 
 	},
+
 	/**
 	 *
      */
