@@ -73,6 +73,7 @@ var map_canvas = {
 				//set marker style of the Geo data
 				map.data.setStyle(function(feature){
 				    return {
+							visible: feature.getProperty('active'),
 						    title: feature.getProperty('title'),
 						    //icon: 'https://foursquare.com/img/categories/food/default.png',
 						    map: map
@@ -155,14 +156,13 @@ var map_canvas = {
 
 							}else{
 								//TODO: //set visibility
-								map.data.remove(feature);
+								feature.setProperty('active',false);
 							}
 						});
 					}else{
 						left_list.html('');
 						map.data.forEach(function(feature) {
-							console.log('--------------');
-						    console.log(feature.getProperty('title'));
+							feature.setProperty('active',true);
 							left_list.append(`<li class="nav-item"
 												 data-id="${feature.getId()}"
 												 data-title="${feature.getProperty('title')}"
