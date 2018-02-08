@@ -68,7 +68,7 @@ var map_canvas = {
 		}
 	],
 	/*
-	 
+
 	 */
 	init: function() {
 		map = new google.maps.Map(document.getElementById('map'), {
@@ -103,7 +103,8 @@ var map_canvas = {
 			return {
 				visible: feature.getProperty('active'), //for filter
 				title: feature.getProperty('title'),
-				//icon: 'https://foursquare.com/img/categories/food/default.png',
+				//icon: 'http://maps.google.com/mapfiles/kml/pal2/icon62.png',
+				icon: 'image/coffee.png',//color:'#5e3e18'
 				map: map
 			};
 		});
@@ -135,9 +136,16 @@ var map_canvas = {
 			});
 			inforWindow.open(map);
 			//TODO: //change marker color
+			console.log(event.feature.getProperty('icon'));
+			map.data.revertStyle();
+			map.data.overrideStyle(event.feature, {icon:'image/coffee_clicked.png'});
 
 		});
-
+		//infoWindow close event addListener
+		google.maps.event.addListener(inforWindow,'closeclick',function(){
+		   //currentMark.setIcon('image/coffee.png');
+			 map.data.revertStyle();
+		});
 	},
 	filterMarkers: function(val) {
 		if (val) {
@@ -157,6 +165,26 @@ var map_canvas = {
 			});
 			//$('#left_list li').show();
 		}
+	},
+	triggerMarkerClickEvent: function(shop){//TODO: //触发点击事件
+		console.log(shop);
+		//google.maps.event.trigger(markers[i], 'click');
+		map.data.forEach(function(feature) {
+			if (shop.id == feature.getId()) {
+				console.log(feature.getProperty('title')+' clicked.');
+				//google.maps.event.trigger(map,'click',{feature:feature});
+				/*var event = new google.maps.Data.MouseEvent({
+				   latLng: shop.geometry.coordinates
+				});
+				google.maps.event.trigger(map, 'click', event);*/
+				//google.maps.event.trigger(map,'click',feature);
+				/*var latlng = new google.maps.LatLng({lat:feature.getGeometry().get().lat(),lng:feature.getGeometry().get().lng()});
+				console.log(latlng);
+				google.maps.event.trigger(map,'click',{stop:null, latlng:latlng});*/
+
+
+			}
+		});
 	},
 
 	/**
