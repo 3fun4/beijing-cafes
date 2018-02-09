@@ -1,6 +1,8 @@
 beijing-cafes
 ====================
 
+## Installation
+
 
 ## Resources:
 * jQuery
@@ -8,7 +10,6 @@ beijing-cafes
 * [Font Awesome](https://fontawesome.com/)
 * [Knockout.js](#)
 * [Google Maps API](#)
-
 * [Map Icons Collection](https://mapicons.mapsmarker.com/)
 	* [Coffee > Map Icons Collection](https://mapicons.mapsmarker.com/markers/restaurants-bars/bars/coffee/?custom_color=5e3e18)
 
