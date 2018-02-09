@@ -1,6 +1,6 @@
 'use strict';
 
-
+//var coffee_shops = [];
 
 //fix: map canvas not showing in bootstrap 'main'
 $(window).resize(function() {
@@ -15,28 +15,31 @@ $(window).resize(function() {
 	var w = $(window).width();
 	var sidebar_sticky_width = 300;
 	$('#map').css('width', (w - sidebar_sticky_width));
+
 }).resize();
 
 
-
-var coffee_shops = [];
-
+/**
+ * Knockout ViewModel
+ */
 function appViewModel() {
 	var self = this;
+	//
 	self.filterInput = ko.observable("init");
-
+	//current clicked list item
 	self.currrentShopId = ko.observable(0);
+	//trigger map marker click event when clicks left list item
 	self.showThisMarker = function(shop) {
 		self.currrentShopId(shop.id);
 		map_canvas.triggerMarkerClickEvent(shop);
-
 	};
-
+	//custom places array
 	self.coffee_shops = ko.observableArray([]);
+	//filtered places
 	self.filterShops = ko.computed(function() {
 
 		var search = self.filterInput().toLowerCase();
-		console.log("search=" + search);
+
 		//filter map markers
 		map_canvas.filterMarkers(search);
 
@@ -57,48 +60,20 @@ $(document).ready(function() {
 		async: false,
 		success: function(data) {
 
-			console.log(data.features);
-			//init map
+			/**init map*/
 			map_canvas.init();
 			map_canvas.render(data);
 
-			//
+			/**init Knockout observer*/
 			var vm = new appViewModel();
+			//add custom places to observer
 			vm.coffee_shops = data.features;
+			//trigger filterArray observer in order to display all places by default
 			vm.filterInput("");
 			ko.applyBindings(vm);
 
 		}
 	});
 
-	/*        //append left list
-	            var left_list = $('#left_list');
-	            map.data.forEach(function(feature) {
-	              left_list.append(`<li class="nav-item"
-	                  data-id="${feature.getId()}"
-	                  data-title="${feature.getProperty('title')}"
-	                  data-lat="${feature.getGeometry().get().lat()}"
-	                  data-lng="${feature.getGeometry().get().lng()}"
-	                  >
-	                  <a class="nav-link" href="#">${feature.getProperty('title')}</a>
-	                  </li>`);
-	            });
-	            //bind list item click event
-	            $('#left_list li').each(function(index, value) {
-	              $(this).on('click', function() {
-	                console.log($(this).data('title') + ':' + $(this).data('lat') + ',' + $(this).data('lng'));
-	                $(this).find('a').toggleClass('active');
-	              });
-	            });
-	//input changes, set map markers visibility
-	$('#zoom-to-area-text').on('input', function() {
-		var val = $(this).val();
-		map_canvas.filterMarkers(val);
-
-	});*/
 
 });
-
-/**
- *
- */
