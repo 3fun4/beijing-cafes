@@ -6,6 +6,9 @@ var markers = [];
 /**current clicked marker*/
 var clickedMarker;
 
+var iconDefault = 'image/coffee.png';
+var iconClicked = 'image/coffee_clicked.png';
+
 /**
  *
  */
@@ -109,7 +112,7 @@ var map_canvas = {
 		var inforWindow = new google.maps.InfoWindow();
 		//infoWindow close event addListener
 		google.maps.event.addListener(inforWindow, 'closeclick', function() {
-			clickedMarker.setIcon('image/coffee.png');
+			clickedMarker.setIcon(iconDefault);
 			clickedMarker = null;
 		});
 
@@ -118,7 +121,7 @@ var map_canvas = {
 			var marker = new google.maps.Marker({
 				position: feature.getGeometry().get(),
 				title: feature.getId() + '-' + feature.getProperty('title'),
-				icon: 'image/coffee.png',
+				icon: iconDefault,
 				map: map,
 				draggable: false,
 				animation: google.maps.Animation.DROP
@@ -147,10 +150,10 @@ var map_canvas = {
 				inforWindow.open(map, marker);
 				//change marker icon
 				if (clickedMarker) {
-					clickedMarker.setIcon('image/coffee.png');
+					clickedMarker.setIcon(iconDefault);
 				}
 				clickedMarker = marker;
-				marker.setIcon('image/coffee_clicked.png');
+				marker.setIcon(iconClicked);
 			});
 			// save the info we need to use later for the side_bar click event
 			markers.push(marker);
@@ -180,7 +183,7 @@ var map_canvas = {
 				fillColor: 'gray', //TODO: //change color
 
 				//icon: 'http://maps.google.com/mapfiles/kml/pal2/icon62.png',
-				icon: 'image/coffee.png', //color:'#5e3e18'
+				icon: iconDefault, //color:'#5e3e18'
 				map: map
 
 			};
@@ -215,13 +218,13 @@ var map_canvas = {
 			//change marker color
 			map.data.revertStyle();
 			map.data.overrideStyle(event.feature, {
-				icon: 'image/coffee_clicked.png'
+				icon: iconClicked
 			});
 
 		});
 		//infoWindow close event addListener
 		google.maps.event.addListener(inforWindow, 'closeclick', function() {
-			//currentMark.setIcon('image/coffee.png');
+			//currentMark.setIcon(iconDefault);
 			map.data.revertStyle();
 		});
 	},
