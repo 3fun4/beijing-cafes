@@ -7,7 +7,7 @@ html, body {
 
 #map {
   height: 100%;
-  left: 285px;/*//TODO: responsive*/
+  /*left: 285px;*//*//TODO: responsive*/
 }
 /*
  * Sidebar
@@ -32,7 +32,7 @@ html, body {
   padding-top: .5rem;
   overflow-x: hidden;
   overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
-  width: 300px;/*//TODO: responsive*/
+  /*width: 300px;*//*//TODO: responsive*/
 }
 
 .sidebar .nav-item{

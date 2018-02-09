@@ -3,16 +3,18 @@
 //fix: map canvas not showing in bootstrap 'main'
 $(window).resize(function() {
 	//set height
-	var h = $(window).height(),
-		offsetTop = 60; // Calculate the top offset
-
+	var h = $(window).height();
+	var offsetTop = 60; // Calculate the top offset
+	offsetTop = 28;
 	$('#map').css('height', (h - offsetTop));
 
 	//set width
 	//TODO: //responsive
 	var w = $(window).width();
-	var sidebar_sticky_width = 300;
+	//var sidebar_sticky_width = 300;
+	var sidebar_sticky_width = $('.sidebar-sticky').width();
 	$('#map').css('width', (w - sidebar_sticky_width));
+	$('#map').css('left', sidebar_sticky_width);
 
 }).resize();
 
@@ -58,7 +60,7 @@ $(document).ready(function() {
 	$.ajax({
 		url: 'data/places_GeoJSON.json',
 		dataType: 'json',
-		async: false,
+		//async: false,
 		success: function(data) {
 
 			/**init map*/

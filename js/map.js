@@ -9,6 +9,7 @@ var clickedMarker;
 var iconDefault = 'image/coffee.png';
 var iconClicked = 'image/coffee_clicked.png';
 
+var iconDianping = 'http://www.dpfile.com/s/i/app/api/images/accr-logo2.237abf5a477e500c02971f2343b844df.png';
 /**
  *
  */
@@ -141,7 +142,7 @@ var map_canvas = {
 
 									<p style="width: 250px;"><i class="fa fa-thumbtack"></i> ${feature.getProperty('address')}</p>
 									<p>
-									<a target="_blank" href="${feature.getProperty('url_dianping')}" ><img src="http://www.dpfile.com/s/i/app/api/images/accr-logo2.237abf5a477e500c02971f2343b844df.png" style="width:16px;height:16px;" ></a>
+									<a target="_blank" href="${feature.getProperty('url_dianping')}" ><img src="${iconDianping}" style="width:16px;height:16px;" ></a>
 									</p>
 								</div>
 							</div>
