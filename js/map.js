@@ -3,7 +3,8 @@
  *
  */
 var map;
-
+var markers = [];
+var clickedMarker;
 /**
  *
  */
@@ -68,7 +69,7 @@ var map_canvas = {
 		}
 	],
 	/*
-
+	 
 	 */
 	init: function() {
 		map = new google.maps.Map(document.getElementById('map'), {
@@ -98,20 +99,104 @@ var map_canvas = {
 		var features = map.data.addGeoJson(data);
 		console.dir(features);
 
+		/*//set marker style of the Geo data
+		map.data.setStyle(function(feature) {
+			return {
+				title: feature.getProperty('title'),
+				map: map,
+				icon: 'image/coffee.png', //color:'#5e3e18'
+				map: map
+
+			};
+		});*/
+		map.data.setStyle(function(feature) {
+			return {
+				visible: false
+			};
+		});
+		//append an infoWindow to the marker
+		var inforWindow = new google.maps.InfoWindow();
+		//infoWindow close event addListener
+		google.maps.event.addListener(inforWindow, 'closeclick', function() {
+			//currentMark.setIcon('image/coffee.png');
+			map.data.revertStyle();
+		});
+
+		//TODO: //
+		map.data.forEach(function(feature) {
+			var marker = new google.maps.Marker({
+				position: feature.getGeometry().get(),
+				title: feature.getId() + '-' + feature.getProperty('title'),
+				icon: 'image/coffee.png',
+				map: map,
+				draggable: false,
+				animation: google.maps.Animation.DROP
+			});
+
+			google.maps.event.addListener(marker, 'click', function() {
+				//
+				var infoHTML = `<div class="card box-shadow border-0">
+								<div class="card-img-top">
+									<div class="info-card border">
+									<img class="img-fluid" src="${feature.getProperty('url_image')?feature.getProperty('url_image'):""}" >
+									</div>
+								</div>
+
+								<div class="card-body">
+									<h6>${feature.getProperty('title')}</h6>
+
+									<p style="width: 250px;"><i class="fa fa-thumbtack"></i> ${feature.getProperty('address')}</p>
+									<p>
+									<a target="_blank" href="${feature.getProperty('url_dianping')}" ><img src="http://www.dpfile.com/s/i/app/api/images/accr-logo2.237abf5a477e500c02971f2343b844df.png" style="width:16px;height:16px;" ></a>
+									</p>
+								</div>
+							</div>
+							`;
+				inforWindow.setContent(infoHTML);
+				//inforWindow.setPosition(event.feature.getGeometry().get());
+				// anchor the infowindow on the marker
+				inforWindow.setOptions({
+					pixelOffset: new google.maps.Size(0, -30)
+				});
+				inforWindow.open(map, marker);
+				//change marker icon
+				if (clickedMarker) {
+					clickedMarker.setIcon('image/coffee.png');
+				}
+				clickedMarker = marker;
+				marker.setIcon('image/coffee_clicked.png');
+			});
+			// save the info we need to use later for the side_bar click event
+			markers.push(marker);
+
+		});
+
+
+	},
+
+
+	/**
+	 *
+	 */
+	render0: function(data) {
+
+		var features = map.data.addGeoJson(data);
+		console.dir(features);
+
 		//set marker style of the Geo data
 		map.data.setStyle(function(feature) {
 			return {
 				visible: feature.getProperty('active'), //for filter
 				title: feature.getProperty('title'),
-<<<<<<< HEAD
+
 				//icon: 'https://foursquare.com/img/categories/food/default.png',
 				map: map,
-				fillColor: 'gray' //TODO: //change color
-=======
+				fillColor: 'gray', //TODO: //change color
+
 				//icon: 'http://maps.google.com/mapfiles/kml/pal2/icon62.png',
-				icon: 'image/coffee.png',//color:'#5e3e18'
+				icon: 'image/coffee.png', //color:'#5e3e18'
 				map: map
->>>>>>> 1e860cd80e0cd228b58723d305a568aa593e5062
+
 			};
 		});
 		//append an infoWindow to the marker
@@ -141,18 +226,20 @@ var map_canvas = {
 				pixelOffset: new google.maps.Size(0, -30)
 			});
 			inforWindow.open(map);
-			//TODO: //change marker color
-			console.log(event.feature.getProperty('icon'));
+			//change marker color
 			map.data.revertStyle();
-			map.data.overrideStyle(event.feature, {icon:'image/coffee_clicked.png'});
+			map.data.overrideStyle(event.feature, {
+				icon: 'image/coffee_clicked.png'
+			});
 
 		});
 		//infoWindow close event addListener
-		google.maps.event.addListener(inforWindow,'closeclick',function(){
-		   //currentMark.setIcon('image/coffee.png');
-			 map.data.revertStyle();
+		google.maps.event.addListener(inforWindow, 'closeclick', function() {
+			//currentMark.setIcon('image/coffee.png');
+			map.data.revertStyle();
 		});
 	},
+
 	filterMarkers: function(val) {
 		if (val) {
 			map.data.forEach(function(feature) {
@@ -172,41 +259,32 @@ var map_canvas = {
 			//$('#left_list li').show();
 		}
 	},
-<<<<<<< HEAD
-	changeMarker: function(markerId) { //TODO: //change marker's color
-		console.log(markerId);
-		map.data.forEach(function(feature) {
-			var id = feature.getId();
-			if (id === markerId) {
-				feature.setProperty('fillColor', 'blue');
-			} else {
-				feature.setProperty('fillColor', 'red');
-			}
-		});
-	},
-=======
-	triggerMarkerClickEvent: function(shop){//TODO: //触发点击事件
-		console.log(shop);
-		//google.maps.event.trigger(markers[i], 'click');
+	/**
+	 * 触发marker点击事件
+	 * @param shop
+	 */
+	triggerMarkerClickEvent: function(shop) {
 		map.data.forEach(function(feature) {
 			if (shop.id == feature.getId()) {
-				console.log(feature.getProperty('title')+' clicked.');
-				//google.maps.event.trigger(map,'click',{feature:feature});
-				/*var event = new google.maps.Data.MouseEvent({
-				   latLng: shop.geometry.coordinates
-				});
-				google.maps.event.trigger(map, 'click', event);*/
-				//google.maps.event.trigger(map,'click',feature);
-				/*var latlng = new google.maps.LatLng({lat:feature.getGeometry().get().lat(),lng:feature.getGeometry().get().lng()});
-				console.log(latlng);
-				google.maps.event.trigger(map,'click',{stop:null, latlng:latlng});*/
-
+				var thisTitle = shop.id + '-' + feature.getProperty('title');
+				var markerToClick = map_canvas.getMarker(thisTitle);
+				google.maps.event.trigger(markerToClick, 'click');
 
 			}
 		});
 	},
 
->>>>>>> 1e860cd80e0cd228b58723d305a568aa593e5062
+	getMarker: function(markerTitle) {
+		var revMarker = {};
+		for (var i = 0; i < markers.length; i++) {
+			var marker = markers[i];
+			if (marker.title === markerTitle) {
+				revMarker = marker;
+			}
+		}
+		return revMarker;
+	},
+
 	/**
 	 *
 	 */

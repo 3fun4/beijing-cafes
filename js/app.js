@@ -28,11 +28,8 @@ function appViewModel() {
 	self.currrentShopId = ko.observable(0);
 	self.showThisMarker = function(shop) {
 		self.currrentShopId(shop.id);
-<<<<<<< HEAD
-		map_canvas.changeMarker(shop.id);
-=======
 		map_canvas.triggerMarkerClickEvent(shop);
->>>>>>> 1e860cd80e0cd228b58723d305a568aa593e5062
+
 	};
 
 	self.coffee_shops = ko.observableArray([]);
