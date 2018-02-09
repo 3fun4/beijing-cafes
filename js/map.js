@@ -83,11 +83,12 @@ var map_canvas = {
 				lng: 116.395888
 			},
 			zoom: 13,
-			mapTypeControl: false
+			mapTypeControl: false,
+			streetViewControl: false
 			/*,
 						zoomControl: true,
 						scaleControl: false,
-						streetViewControl: false,
+
 						rotateControl: false,
 						fullscreenControl: true,
 						styles:this.styler*/
