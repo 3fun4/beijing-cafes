@@ -104,7 +104,8 @@ var map_canvas = {
 				visible: feature.getProperty('active'), //for filter
 				title: feature.getProperty('title'),
 				//icon: 'https://foursquare.com/img/categories/food/default.png',
-				map: map
+				map: map,
+				fillColor: 'gray' //TODO: //change color
 			};
 		});
 		//append an infoWindow to the marker
@@ -158,7 +159,17 @@ var map_canvas = {
 			//$('#left_list li').show();
 		}
 	},
-
+	changeMarker: function(markerId) { //TODO: //change marker's color
+		console.log(markerId);
+		map.data.forEach(function(feature) {
+			var id = feature.getId();
+			if (id === markerId) {
+				feature.setProperty('fillColor', 'blue');
+			} else {
+				feature.setProperty('fillColor', 'red');
+			}
+		});
+	},
 	/**
 	 *
 	 */

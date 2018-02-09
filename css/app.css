@@ -36,6 +36,7 @@ html, body {
 }
 
 .sidebar .nav-link {
+  font-size: .75rem;
   font-weight: 500;
   color: #333;
 }
