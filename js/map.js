@@ -256,7 +256,7 @@ var map_canvas = {
 	 */
 	triggerMarkerClickEvent: function(shop) {
 		map.data.forEach(function(feature) {
-			if (shop.id == feature.getId()) {
+			if (shop.id === feature.getId()) {
 				var thisTitle = shop.id + '-' + feature.getProperty('title');
 				var markerToClick = map_canvas.getMarker(thisTitle);
 				google.maps.event.trigger(markerToClick, 'click');

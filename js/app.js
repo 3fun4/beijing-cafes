@@ -1,7 +1,5 @@
 'use strict';
 
-//var coffee_shops = [];
-
 //fix: map canvas not showing in bootstrap 'main'
 $(window).resize(function() {
 	//set height
