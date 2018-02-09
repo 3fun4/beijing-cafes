@@ -49,6 +49,9 @@ function appViewModel() {
 	});
 }
 
+/**
+ *
+ */
 $(document).ready(function() {
 
 	//load Geo data from JSON file
