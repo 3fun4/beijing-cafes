@@ -36,3 +36,4 @@ This project displays some of the coffee shops in Beijing using Google Maps API.
 * [北京咖啡地图 | 藏匿于京城胡同里的十家咖啡馆](http://www.mafengwo.cn/gonglve/ziyouxing/46844.html)
 * [北京咖啡地图 | 胡同老青砖，溢出咖啡香](https://zhuanlan.zhihu.com/p/28658546)
 * [探索北京最美咖啡馆，持续盘点中！【咖啡控必收藏】](http://www.mafengwo.cn/i/5402621.html)
+* [Fisheye Cafe](https://www.douban.com/note/93159831/)
