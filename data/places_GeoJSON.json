@@ -480,5 +480,20 @@
 			"url_image": "http://qcloud.dpfile.com/pc/J_ONebMW_LZ8Ie_ZkR0vVP5SwNmtlDqOiSHt0GDZ0coCCnq-2fPZxM8ThQ2sImF6TYGVDmosZWTLal1WbWRW3A.jpg"
 		},
 		"id": 34
+	}, {
+		"type": "Feature",
+		"geometry": {
+			"type": "Point",
+			"coordinates": [116.515738, 39.931045]
+		},
+		"properties": {
+			"isActive": false,
+			"title": "猫头鹰公社Owlery Cafe&Brew",
+			"address": "北京市朝阳区青年路29号院华纺易城22号楼15号底商",
+			"open_hours": "周一至周日 10:00-00:00",
+			"url_dianping": "http://www.dianping.com/shop/65974464",
+			"url_image": "http://qcloud.dpfile.com/pc/OvVSKm4CTnvN-yQaGXITs9D5iiCTjn85HDeO4Zyj3Gc-OrTcCi-L0gXpZGLYEEcFTYGVDmosZWTLal1WbWRW3A.jpg"
+		},
+		"id": 35
 	}]
 }
