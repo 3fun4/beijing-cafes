@@ -57,26 +57,29 @@ function appViewModel() {
 $(document).ready(function() {
 
 	//load Geo data from JSON file
-	$.ajax({
+	var request = $.ajax({
 		url: 'data/places_GeoJSON.json',
 		dataType: 'json',
-		//async: false,
-		success: function(data) {
+		method: 'GET'
 
-			/**init map*/
-			map_canvas.init();
-			map_canvas.render(data);
+	}).done(function(data, textStatus, jqXHR) {
 
-			/**init Knockout observer*/
-			var vm = new appViewModel();
-			//add custom places to observer
-			vm.coffee_shops = data.features;
-			//trigger filterArray observer in order to display all places by default
-			vm.filterInput("");
-			ko.applyBindings(vm);
+		/**init map*/
+		map_canvas.init();
+		map_canvas.render(data);
 
-		}
+		/**init Knockout observer*/
+		var vm = new appViewModel();
+		//add custom places to observer
+		vm.coffee_shops = data.features;
+		//trigger filterArray observer in order to display all places by default
+		vm.filterInput("");
+		ko.applyBindings(vm);
+
+	}).fail(function(jqXHR, textStatus, error) {
+		alert("error"); //TODO: //
 	});
+
 
 
 });

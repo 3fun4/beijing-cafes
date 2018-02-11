@@ -130,7 +130,7 @@ var map_canvas = {
 			});
 			//marker click event addListener
 			google.maps.event.addListener(marker, 'click', function() {
-				//info window html//${if(feature.getProperty('url_dianping')!=""}
+				//info window html
 				var infoHTML_dianping = '';
 				if (feature.getProperty('url_dianping') != "") {
 					infoHTML_dianping = `<p>
