@@ -130,24 +130,33 @@ var map_canvas = {
 			});
 			//marker click event addListener
 			google.maps.event.addListener(marker, 'click', function() {
-				//info window html
+				//info window html//${if(feature.getProperty('url_dianping')!=""}
+				var infoHTML_dianping = '';
+				if (feature.getProperty('url_dianping') != "") {
+					infoHTML_dianping = `<p>
+										 	<a target = "_blank" href = "${feature.getProperty('url_dianping')}" >
+												<img src = "${iconDianping}" style = "width:16px;height:16px;" >
+											</a>
+										 </p>
+										`;
+				}
 				var infoHTML = `<div class="card box-shadow border-0">
-								<div class="card-img-top">
-									<div class="info-card border">
-									<img class="img-fluid" src="${feature.getProperty('url_image')?feature.getProperty('url_image'):""}" >
+									<div class="card-img-top">
+										<div class="info-card border-top border-bottom">
+										<img class="img-fluid" src="${feature.getProperty('url_image')?feature.getProperty('url_image'):""}" >
+										</div>
+									</div>
+
+									<div class="card-body">
+										<h6>${feature.getProperty('title')}</h6>
+										<p style="width: 250px;"><i class="fa fa-thumbtack"></i> ${feature.getProperty('address')}</p>
+
+										${infoHTML_dianping}
+
 									</div>
 								</div>
+								`;
 
-								<div class="card-body">
-									<h6>${feature.getProperty('title')}</h6>
-
-									<p style="width: 250px;"><i class="fa fa-thumbtack"></i> ${feature.getProperty('address')}</p>
-									<p>
-									<a target="_blank" href="${feature.getProperty('url_dianping')}" ><img src="${iconDianping}" style="width:16px;height:16px;" ></a>
-									</p>
-								</div>
-							</div>
-							`;
 				inforWindow.setContent(infoHTML);
 				inforWindow.open(map, marker);
 				//change marker icon
