@@ -1,0 +1,32 @@
+{
+	"type": "FeatureCollection",
+	"features": [{
+		"type": "Feature",
+		"geometry": {
+			"type": "Point",
+			"coordinates": [116.393037, 39.895962]
+		},
+		"properties": {
+			"isActive": false,
+			"title": "言几又",
+			"address": "北京市海淀区",
+			"url_dianping": "",
+			"url_image": ""
+		},
+		"id": 1
+	}, {
+		"type": "Feature",
+		"geometry": {
+			"type": "Point",
+			"coordinates": [116.393037, 39.895962]
+		},
+		"properties": {
+			"isActive": false,
+			"title": "库布里克",
+			"address": "北京市东城区",
+			"url_dianping": "",
+			"url_image": ""
+		},
+		"id": 2
+	}]
+}
