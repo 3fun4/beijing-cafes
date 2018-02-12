@@ -9,7 +9,6 @@ var clickedMarker;
 var iconDefault = 'image/coffee.png';
 var iconClicked = 'image/coffee_clicked.png';
 
-var iconDianping = 'http://www.dpfile.com/s/i/app/api/images/accr-logo2.237abf5a477e500c02971f2343b844df.png';
 /**
  *
  */
@@ -93,8 +92,20 @@ var map_canvas = {
 						fullscreenControl: true,
 						styles:this.styler*/
 		});
-
-
+	},
+	/**
+	 * get base url from a url string
+	 * @param url
+	 */
+	getBaseURL: function(url) {
+		var baseUrl = '';
+		var url_arr = url.split('/');
+		if (url_arr[2].split('.').length > 2 && url_arr[2].indexOf('www') < 0) {
+			baseUrl = url_arr[0] + "//www." + url_arr[2].split('.')[1] + '.' + url_arr[2].split('.')[2];
+		} else {
+			baseUrl = url_arr[0] + '//' + url_arr[2];
+		}
+		return baseUrl;
 	},
 
 	/**
@@ -116,6 +127,7 @@ var map_canvas = {
 		google.maps.event.addListener(inforWindow, 'closeclick', function() {
 			clickedMarker.setIcon(iconDefault);
 			clickedMarker = null;
+
 		});
 
 		//add custom markers to map
@@ -131,14 +143,19 @@ var map_canvas = {
 			//marker click event addListener
 			google.maps.event.addListener(marker, 'click', function() {
 				//info window html
-				var infoHTML_dianping = '';
-				if (feature.getProperty('url_dianping') != "") {
-					infoHTML_dianping = `<p>
-										 	<a target = "_blank" href = "${feature.getProperty('url_dianping')}" >
-												<img src = "${iconDianping}" style = "width:16px;height:16px;" >
-											</a>
-										 </p>
+				var infoHTML_openhours = '';
+				if (feature.getProperty('open_hours') && feature.getProperty('open_hours') != '') {
+					infoHTML_openhours = `<p style="width: 250px;"><i class="far fa-clock"></i> ${feature.getProperty('open_hours')}</p>
 										`;
+				}
+				var infoHTML_links = '<p><i class="fa fa-link"></i> ';
+				var links = feature.getProperty('links');
+				if (links) {
+					for (var i = 0; i < links.length; i++) {
+						var url = links[i];
+						var baseUrl = map_canvas.getBaseURL(url);
+						infoHTML_links += ` <a target = "_blank" href = "${url}"  title = "${url}"><img src = "${baseUrl}/favicon.ico" style = "width:16px;height:16px;" ></a>`;
+					}
 				}
 				var infoHTML = `<div class="card box-shadow border-0">
 									<div class="card-img-top">
@@ -146,13 +163,11 @@ var map_canvas = {
 										<img class="img-fluid" src="${feature.getProperty('url_image')?feature.getProperty('url_image'):""}" >
 										</div>
 									</div>
-
 									<div class="card-body">
 										<h6>${feature.getProperty('title')}</h6>
-										<p style="width: 250px;"><i class="fa fa-thumbtack"></i> ${feature.getProperty('address')}</p>
-
-										${infoHTML_dianping}
-
+										<p><i class="fa fa-map-marker-alt"></i> ${feature.getProperty('address')}</p>
+										${infoHTML_openhours}
+										${infoHTML_links}
 									</div>
 								</div>
 								`;
@@ -172,72 +187,6 @@ var map_canvas = {
 		});
 
 
-	},
-
-
-	/**
-	 *
-	 */
-	render0: function(data) {
-
-		var features = map.data.addGeoJson(data);
-		console.dir(features);
-
-		//set marker style of the Geo data
-		map.data.setStyle(function(feature) {
-			return {
-				visible: feature.getProperty('active'), //for filter
-				title: feature.getProperty('title'),
-
-				//icon: 'https://foursquare.com/img/categories/food/default.png',
-				map: map,
-				fillColor: 'gray', //TODO: //change color
-
-				//icon: 'http://maps.google.com/mapfiles/kml/pal2/icon62.png',
-				icon: iconDefault, //color:'#5e3e18'
-				map: map
-
-			};
-		});
-		//append an infoWindow to the marker
-		var inforWindow = new google.maps.InfoWindow();
-		map.data.addListener('click', function(event) {
-			var infoHTML = `<div class="card box-shadow border-0">
-								<div class="card-img-top">
-									<div class="info-card border">
-									<img class="img-fluid" src="${event.feature.getProperty('url_image')?event.feature.getProperty('url_image'):""}" >
-									</div>
-								</div>
-
-								<div class="card-body">
-									<h6>${event.feature.getProperty('title')}</h6>
-
-									<p style="width: 250px;"><i class="fa fa-thumbtack"></i> ${event.feature.getProperty('address')}</p>
-									<p>
-									<a target="_blank" href="${event.feature.getProperty('url_dianping')}" ><img src="http://www.dpfile.com/s/i/app/api/images/accr-logo2.237abf5a477e500c02971f2343b844df.png" style="width:16px;height:16px;" ></a>
-									</p>
-								</div>
-							</div>
-							`;
-			inforWindow.setContent(infoHTML);
-			inforWindow.setPosition(event.feature.getGeometry().get());
-			// anchor the infowindow on the marker
-			inforWindow.setOptions({
-				pixelOffset: new google.maps.Size(0, -30)
-			});
-			inforWindow.open(map);
-			//change marker color
-			map.data.revertStyle();
-			map.data.overrideStyle(event.feature, {
-				icon: iconClicked
-			});
-
-		});
-		//infoWindow close event addListener
-		google.maps.event.addListener(inforWindow, 'closeclick', function() {
-			//currentMark.setIcon(iconDefault);
-			map.data.revertStyle();
-		});
 	},
 	/**
 	 * filter markers by title

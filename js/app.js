@@ -1,5 +1,6 @@
 'use strict';
 
+var DATA_URL = 'data/coffees_GeoJSON.json';
 //fix: map canvas not showing in bootstrap 'main'
 $(window).resize(function() {
 	//set height
@@ -20,7 +21,7 @@ $(window).resize(function() {
 
 
 /**
- * Knockout ViewModel
+ * Knockout ViewModel: left list items
  */
 function appViewModel() {
 	var self = this;
@@ -51,14 +52,12 @@ function appViewModel() {
 	});
 }
 
-/**
- *
- */
+
 $(document).ready(function() {
 
 	//load Geo data from JSON file
 	var request = $.ajax({
-		url: 'data/places_GeoJSON.json',
+		url: DATA_URL,
 		dataType: 'json',
 		method: 'GET'
 

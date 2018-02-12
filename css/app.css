@@ -90,3 +90,6 @@ html, body {
   margin: auto;
 }
 
+.card-body p {
+  width: 250px;
+}
