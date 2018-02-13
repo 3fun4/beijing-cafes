@@ -33,7 +33,12 @@ var MAP_CANVAS = MAP_CANVAS || (function() {
 			mapTypeControl: false,
 			streetViewControl: false
 		});
-
+		//reset map center when window resizes
+		google.maps.event.addDomListener(window, "resize", function() {
+			var center = map.getCenter();
+			google.maps.event.trigger(map, "resize");
+			map.setCenter(center);
+		});
 	};
 	/**
 	 * get base url from a url string
