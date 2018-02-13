@@ -5,10 +5,23 @@ html, body {
   padding: 0;
 }
 
-#map {
-  height: 100%;
-  /*left: 285px;*//*//TODO: responsive*/
+/**
+* responsive map
+*/
+.map-responsive{
+    overflow:hidden;
+    padding-bottom:56.25%;/*landscape,16:9 */;
+    position:relative;
+    height:0;
 }
+.map-responsive .map{
+    left:0;
+    top:200px;
+    height:550px;
+    width:100%;
+    position:absolute;
+}
+
 /*
  * Sidebar
  */
@@ -92,4 +105,11 @@ html, body {
 
 .card-body p {
   width: 250px;
+}
+
+/**
+* Bootstrap alert: fit to its content
+*/
+.alert{
+  display: inline-block;
 }

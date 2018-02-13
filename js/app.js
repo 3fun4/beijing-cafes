@@ -1,38 +1,39 @@
 'use strict';
+/**
+ * ajax request error handler
+ */
+$(document).ajaxError(function(event, jqxhr, settings, error) {
+	var err_alert = `
+                  <div class="alert alert-danger alert-dismissible fade show" role="alert" style="left:300px;">
+                    <h6>app error</h6>
+                    <hr>
+                    <p>
+                      [${jqxhr.status}][${jqxhr.statusText}] <a href="#" class="alert-link">${settings.url}</a>
+                    </p>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  `;
+	$('#msg').append(err_alert);
+});
 
+//places GeoJSON file url
 var DATA_URL = 'data/coffees_GeoJSON.json';
-//fix: map canvas not showing in bootstrap 'main'
-$(window).resize(function() {
-	//set height
-	var h = $(window).height();
-	var offsetTop = 60; // Calculate the top offset
-	offsetTop = 28;
-	$('#map').css('height', (h - offsetTop));
-
-	//set width
-	//TODO: //responsive
-	var w = $(window).width();
-	//var sidebar_sticky_width = 300;
-	var sidebar_sticky_width = $('.sidebar-sticky').width();
-	$('#map').css('width', (w - sidebar_sticky_width));
-	$('#map').css('left', sidebar_sticky_width);
-
-}).resize();
-
 
 /**
  * Knockout ViewModel: left list items
  */
 function appViewModel() {
 	var self = this;
-	//
+	//input text
 	self.filterInput = ko.observable("init");
 	//current clicked list item
 	self.currrentShopId = ko.observable(0);
 	//trigger map marker click event when clicks left list item
 	self.showThisMarker = function(shop) {
 		self.currrentShopId(shop.id);
-		map_canvas.triggerMarkerClickEvent(shop);
+		MAP_CANVAS.triggerMarkerClickEvent(shop);
 	};
 	//custom places array
 	self.coffee_shops = ko.observableArray([]);
@@ -42,7 +43,7 @@ function appViewModel() {
 		var search = self.filterInput().toLowerCase();
 
 		//filter map markers
-		map_canvas.filterMarkers(search);
+		MAP_CANVAS.filterMarkers(search);
 
 		return ko.utils.arrayFilter(self.coffee_shops, function(shop) {
 			var title = shop.properties.title;
@@ -64,8 +65,8 @@ $(document).ready(function() {
 	}).done(function(data, textStatus, jqXHR) {
 
 		/**init map*/
-		map_canvas.init();
-		map_canvas.render(data);
+		MAP_CANVAS.init();
+		MAP_CANVAS.render(data);
 
 		/**init Knockout observer*/
 		var vm = new appViewModel();
@@ -75,8 +76,6 @@ $(document).ready(function() {
 		vm.filterInput("");
 		ko.applyBindings(vm);
 
-	}).fail(function(jqXHR, textStatus, error) {
-		alert("error"); //TODO: //
 	});
 
 
