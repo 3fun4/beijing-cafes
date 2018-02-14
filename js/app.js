@@ -65,7 +65,7 @@ $(document).ready(function() {
 	}).done(function(data, textStatus, jqXHR) {
 
 		/**init map*/
-		MAP_CANVAS.init();
+		MAP_CANVAS.init('map');
 		MAP_CANVAS.render(data);
 
 		/**init Knockout observer*/
@@ -77,7 +77,5 @@ $(document).ready(function() {
 		ko.applyBindings(vm);
 
 	});
-
-
 
 });

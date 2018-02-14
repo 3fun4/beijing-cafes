@@ -8,7 +8,7 @@ var MAP_CANVAS = MAP_CANVAS || (function() {
 	var self = {};
 
 	/**google.map object*/
-	var map;
+	var _MAP;
 	//map center
 	var _LATLNG_CENTER = {
 		lat: 39.941165,
@@ -26,10 +26,11 @@ var MAP_CANVAS = MAP_CANVAS || (function() {
 
 	/**
 	 * initial google.map
+	 * @param canvasId
 	 */
-	self.init = function() {
+	self.init = function(canvasId) {
 
-		map = new google.maps.Map(document.getElementById('map'), {
+		_MAP = new google.maps.Map(document.getElementById(canvasId), {
 			center: _LATLNG_CENTER,
 			zoom: 13,
 			mapTypeControl: false,
@@ -37,12 +38,30 @@ var MAP_CANVAS = MAP_CANVAS || (function() {
 		});
 		//reset map center when window resizes
 		google.maps.event.addDomListener(window, "resize", function() {
-			var center = map.getCenter();
-			google.maps.event.trigger(map, "resize");
-			map.setCenter(center);
+			var center = _MAP.getCenter();
+			google.maps.event.trigger(_MAP, "resize");
+			_MAP.setCenter(center);
+			//resize infowindow
+			if (isInfoWindowOpen()) {
+				console.log('resizing infowindow');
+				_INFO_WINDOW.close();
+				_INFO_WINDOW.open(_MAP, _CLICKED_MARKER);
+			}
 		});
 		//info window
 		_INFO_WINDOW = new google.maps.InfoWindow();
+	};
+	/**
+	 * check whether the infowindow is open
+	 * @returns boolean
+	 */
+	var isInfoWindowOpen = function() {
+		if (_INFO_WINDOW) {
+			var map_infowindow = _INFO_WINDOW.getMap();
+			return (map_infowindow !== null && map_infowindow !== "undefined");
+		} else {
+			return false;
+		}
 	};
 	/**
 	 * get base url from a url string
@@ -79,12 +98,7 @@ var MAP_CANVAS = MAP_CANVAS || (function() {
 				infoHTML_links += ` <a target = "_blank" href = "${url}"  title = "${url}"><img src = "${baseUrl}/favicon.ico" style = "width:16px;height:16px;" ></a>`;
 			}
 		}
-		var infoHTML = `<div class="card box-shadow border-0">
-							<div class="card-img-top">
-								<div class="info-card border-top border-bottom">
-								<img class="img-fluid" src="${feature.getProperty('url_image')?feature.getProperty('url_image'):""}" >
-								</div>
-							</div>
+		var infoHTML = `<div class="card">
 							<div class="card-body">
 								<h6>${feature.getProperty('title')}</h6>
 								<p><i class="fa fa-map-marker-alt"></i> ${feature.getProperty('address')}</p>
@@ -101,9 +115,9 @@ var MAP_CANVAS = MAP_CANVAS || (function() {
 	 */
 	self.render = function(data) {
 		//load data to map
-		var features = map.data.addGeoJson(data);
+		var features = _MAP.data.addGeoJson(data);
 		//set default marker icon to invisible
-		map.data.setStyle(function(feature) {
+		_MAP.data.setStyle(function(feature) {
 			return {
 				visible: false
 			};
@@ -115,13 +129,13 @@ var MAP_CANVAS = MAP_CANVAS || (function() {
 		});
 
 		//add custom markers to map
-		map.data.forEach(function(feature) {
+		_MAP.data.forEach(function(feature) {
 
 			var marker = new google.maps.Marker({
 				position: feature.getGeometry().get(),
 				title: feature.getId() + '-' + feature.getProperty('title'),
 				icon: _ICON_DEFAULT,
-				map: map,
+				map: _MAP,
 				draggable: false,
 				animation: google.maps.Animation.DROP
 			});
@@ -131,7 +145,7 @@ var MAP_CANVAS = MAP_CANVAS || (function() {
 				//info window html
 				var infoHTML = getInfoWindowHTML(feature);
 				_INFO_WINDOW.setContent(infoHTML);
-				_INFO_WINDOW.open(map, marker);
+				_INFO_WINDOW.open(_MAP, marker);
 				//change marker icon
 				setClickedMarker(marker);
 			});
@@ -177,7 +191,7 @@ var MAP_CANVAS = MAP_CANVAS || (function() {
 	 * @param shop
 	 */
 	self.triggerMarkerClickEvent = function(shop) {
-		map.data.forEach(function(feature) {
+		_MAP.data.forEach(function(feature) {
 			if (shop.id === feature.getId()) {
 				var thisTitle = shop.id + '-' + feature.getProperty('title');
 				var markerToClick = getMarker(thisTitle);

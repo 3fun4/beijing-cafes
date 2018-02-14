@@ -129,7 +129,6 @@ h2{
 .card-body h6,
 .card-body p {
   color: var(--main-font-color);
+  max-width: 200px;
 }
-.card-body p {
-  width: 250px;
-}
+
