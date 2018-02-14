@@ -11,8 +11,8 @@ var MAP_CANVAS = MAP_CANVAS || (function() {
 	var _MAP;
 	//map center
 	var _LATLNG_CENTER = {
-		lat: 39.941165,
-		lng: 116.395888
+		lat: 39.928155,
+		lng: 116.397717
 	};
 	//map markers
 	var _MARKERS = [];
