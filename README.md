@@ -8,26 +8,23 @@ This project displays some of the coffee shops in Beijing using Google Maps API.
 * Run the HTTP server and deploy this project to the server
 * Visit http://[host-server-ip]:[host-server-port]/beijing-cafes in a web browser
 
-## Supported Browsers
-* Chrome
-* Firefox
-* Microsoft Edge
-* iPad Pro ... Safari
-* iPhone 7 Safari
+## Platform Tested
+* Window 10 Chrome, Firefox
+* iPad Pro 10" Chrome
+* iPhone 7 Chrome
 
-## Resources:
+## Resources
 * jQuery
-* Bootstrap 4.0
 * [Font Awesome](https://fontawesome.com/)
 * [Knockout.js](#)
 * [Google Maps API](#)
 * [Map Icons Collection](https://mapicons.mapsmarker.com/)
 	* [Coffee > Map Icons Collection](https://mapicons.mapsmarker.com/markers/restaurants-bars/bars/coffee/?custom_color=5e3e18)
 
-### Third Party Resource
+### Third Party Resources
 * ![dianpingIcon](http://www.dpfile.com/s/i/app/api/images/accr-logo2.237abf5a477e500c02971f2343b844df.png) [dianping.com](http://www.dianping.com)
 
-## References：
+## References
 * [咖啡愛好者的首選，精選6家 北京獨立咖啡店](https://www.klook.com/zh-TW/blog/%E5%8C%97%E4%BA%AC%E7%8D%A8%E7%AB%8B%E5%92%96%E5%95%A1%E5%BA%97/)
 * [北京文艺地图 丨京城最具特色的咖啡馆大公开！](http://www.mafengwo.cn/gonglve/ziyouxing/32241.html)
 * [北京的好咖啡馆有哪些？](https://www.zhihu.com/question/19550742)
