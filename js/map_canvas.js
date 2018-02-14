@@ -84,7 +84,6 @@ var MAP_CANVAS = MAP_CANVAS || (function() {
 	 * @return string
 	 */
 	var getInfoWindowHTML = function(feature) {
-		//info window html
 		var infoHTML_openhours = '';
 		if (feature.getProperty('open_hours') && feature.getProperty('open_hours') != '') {
 			infoHTML_openhours = `<p><i class="far fa-clock"></i> ${feature.getProperty('open_hours')}</p>
