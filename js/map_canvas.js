@@ -58,7 +58,43 @@ var MAP_CANVAS = MAP_CANVAS || (function() {
 		}
 		return baseUrl;
 	};
-
+	/**
+	 * form info window html and return
+	 * @param feature google map feature
+	 * @return string
+	 */
+	var getInfoWindowHTML = function(feature) {
+		//info window html
+		var infoHTML_openhours = '';
+		if (feature.getProperty('open_hours') && feature.getProperty('open_hours') != '') {
+			infoHTML_openhours = `<p style="width: 250px;"><i class="far fa-clock"></i> ${feature.getProperty('open_hours')}</p>
+										`;
+		}
+		var infoHTML_links = '<p><i class="fa fa-link"></i> ';
+		var links = feature.getProperty('links');
+		if (links) {
+			for (var i = 0; i < links.length; i++) {
+				var url = links[i];
+				var baseUrl = getBaseURL(url);
+				infoHTML_links += ` <a target = "_blank" href = "${url}"  title = "${url}"><img src = "${baseUrl}/favicon.ico" style = "width:16px;height:16px;" ></a>`;
+			}
+		}
+		var infoHTML = `<div class="card box-shadow border-0">
+							<div class="card-img-top">
+								<div class="info-card border-top border-bottom">
+								<img class="img-fluid" src="${feature.getProperty('url_image')?feature.getProperty('url_image'):""}" >
+								</div>
+							</div>
+							<div class="card-body">
+								<h6>${feature.getProperty('title')}</h6>
+								<p><i class="fa fa-map-marker-alt"></i> ${feature.getProperty('address')}</p>
+								${infoHTML_openhours}
+								${infoHTML_links}
+							</div>
+						</div>
+						`;
+		return infoHTML;
+	};
 	/**
 	 * render the map with custom places
 	 * @param data {Array} places' GeoJSON data
@@ -93,35 +129,7 @@ var MAP_CANVAS = MAP_CANVAS || (function() {
 			google.maps.event.addListener(marker, 'click', function() {
 
 				//info window html
-				var infoHTML_openhours = '';
-				if (feature.getProperty('open_hours') && feature.getProperty('open_hours') != '') {
-					infoHTML_openhours = `<p style="width: 250px;"><i class="far fa-clock"></i> ${feature.getProperty('open_hours')}</p>
-										`;
-				}
-				var infoHTML_links = '<p><i class="fa fa-link"></i> ';
-				var links = feature.getProperty('links');
-				if (links) {
-					for (var i = 0; i < links.length; i++) {
-						var url = links[i];
-						var baseUrl = getBaseURL(url);
-						infoHTML_links += ` <a target = "_blank" href = "${url}"  title = "${url}"><img src = "${baseUrl}/favicon.ico" style = "width:16px;height:16px;" ></a>`;
-					}
-				}
-				var infoHTML = `<div class="card box-shadow border-0">
-									<div class="card-img-top">
-										<div class="info-card border-top border-bottom">
-										<img class="img-fluid" src="${feature.getProperty('url_image')?feature.getProperty('url_image'):""}" >
-										</div>
-									</div>
-									<div class="card-body">
-										<h6>${feature.getProperty('title')}</h6>
-										<p><i class="fa fa-map-marker-alt"></i> ${feature.getProperty('address')}</p>
-										${infoHTML_openhours}
-										${infoHTML_links}
-									</div>
-								</div>
-								`;
-
+				var infoHTML = getInfoWindowHTML(feature);
 				_INFO_WINDOW.setContent(infoHTML);
 				_INFO_WINDOW.open(map, marker);
 				//change marker icon
@@ -193,7 +201,7 @@ var MAP_CANVAS = MAP_CANVAS || (function() {
 		return revMarker;
 	};
 	/**
-	 *
+	 * set clicked marker
 	 * @param marker
 	 */
 	var setClickedMarker = function(marker) {

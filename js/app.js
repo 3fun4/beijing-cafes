@@ -22,7 +22,7 @@ $(document).ajaxError(function(event, jqxhr, settings, error) {
 var DATA_URL = 'data/coffees_GeoJSON.json';
 
 /**
- * Knockout ViewModel: left list items
+ * Knockout ViewModel: places list items
  */
 function appViewModel() {
 	var self = this;
