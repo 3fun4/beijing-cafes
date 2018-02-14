@@ -14,13 +14,15 @@ var MAP_CANVAS = MAP_CANVAS || (function() {
 		lat: 39.941165,
 		lng: 116.395888
 	};
-	/**google.map markers*/
+	//map markers
 	var _MARKERS = [];
-	/**current clicked marker*/
+	//current clicked marker
 	var _CLICKED_MARKER;
-
+	//marker's icon
 	var _ICON_DEFAULT = 'image/coffee.png';
 	var _ICON_CLICKED = 'image/coffee_clicked.png';
+	//infoWindow
+	var _INFO_WINDOW;
 
 	/**
 	 * initial google.map
@@ -39,6 +41,8 @@ var MAP_CANVAS = MAP_CANVAS || (function() {
 			google.maps.event.trigger(map, "resize");
 			map.setCenter(center);
 		});
+		//info window
+		_INFO_WINDOW = new google.maps.InfoWindow();
 	};
 	/**
 	 * get base url from a url string
@@ -68,13 +72,10 @@ var MAP_CANVAS = MAP_CANVAS || (function() {
 				visible: false
 			};
 		});
-		//append an infoWindow to the marker
-		var inforWindow = new google.maps.InfoWindow();
-		//infoWindow close event addListener
-		google.maps.event.addListener(inforWindow, 'closeclick', function() {
-			_CLICKED_MARKER.setIcon(_ICON_DEFAULT);
-			_CLICKED_MARKER = null;
 
+		//infoWindow close event addListener
+		google.maps.event.addListener(_INFO_WINDOW, 'closeclick', function() {
+			setClickedMarker(null);
 		});
 
 		//add custom markers to map
@@ -121,14 +122,10 @@ var MAP_CANVAS = MAP_CANVAS || (function() {
 								</div>
 								`;
 
-				inforWindow.setContent(infoHTML);
-				inforWindow.open(map, marker);
+				_INFO_WINDOW.setContent(infoHTML);
+				_INFO_WINDOW.open(map, marker);
 				//change marker icon
-				if (_CLICKED_MARKER) {
-					_CLICKED_MARKER.setIcon(_ICON_DEFAULT);
-				}
-				_CLICKED_MARKER = marker;
-				marker.setIcon(_ICON_CLICKED);
+				setClickedMarker(marker);
 			});
 			// save the info we need to use later for the side_bar click event
 			_MARKERS.push(marker);
@@ -142,6 +139,14 @@ var MAP_CANVAS = MAP_CANVAS || (function() {
 	 * @param val title
 	 */
 	self.filterMarkers = function(val) {
+		//if info window is open, close it and set clicked marker to null
+		if (_CLICKED_MARKER) {
+			//clear clicked marker
+			setClickedMarker(null);
+			//trigger info window close event
+			_INFO_WINDOW.close();
+		}
+		//filter markers
 		if (val) {
 			for (var i = 0; i < _MARKERS.length; i++) {
 				var marker = _MARKERS[i];
@@ -186,6 +191,25 @@ var MAP_CANVAS = MAP_CANVAS || (function() {
 			}
 		}
 		return revMarker;
+	};
+	/**
+	 *
+	 * @param marker
+	 */
+	var setClickedMarker = function(marker) {
+		if (marker) {
+			//change marker icon
+			if (_CLICKED_MARKER) {
+				_CLICKED_MARKER.setIcon(_ICON_DEFAULT);
+			}
+			//set clicked marker
+			_CLICKED_MARKER = marker;
+			marker.setIcon(_ICON_CLICKED);
+		} else {
+			//clear clicked marker
+			_CLICKED_MARKER.setIcon(_ICON_DEFAULT);
+			_CLICKED_MARKER = null;
+		}
 	}
 
 	return self;

@@ -8,42 +8,34 @@
       <meta name="renderer" content="webkit|ie-comp|ie-stand">
       <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
       <meta charset="utf-8">
-      <link rel="stylesheet" href="vendor/bootstrap-4.0.0/css/bootstrap.min.css">
+      <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
       <link rel="stylesheet" href="css/app.css">
     </head>
     <body>
-
-      <!-- -->
-
-      <div class="container-fluid">
-          <!-- <div class="row"> -->
-            <nav class="d-none d-md-block bg-light sidebar">
-              <div>
-                  <input class="form-control" id="zoom-to-area-text" type="text" placeholder="Type to filter" data-bind="{textInput:filterInput}">
-
-              </div>
-              <div class="sidebar-sticky border-top">
-                 <ul class="nav flex-column" id="left_list" data-bind="foreach: filterShops">
-                  <li class="nav-item">
-                    <a class="nav-link" href="#" data-bind="{text:properties.title, click:$parent.showThisMarker, css: $parent.currrentShopId()==id ? 'active': '' }"></a>
-                  </li>
-                </ul>
-
-              </div>
-            </nav>
-            <main>
-              <div id="msg"></div>
-              <div class="map-responsive">
-                  <div class="map" id="map"></div>
-              </div>
-            </main>
-
-      </div>
-
+      <article>
+        <!-- title -->
+        <h2>Beijing Coffee Shops</h2>
+        <!-- message alert-->
+        <div id="msg"></div>
+        <!-- Google Map-->
+        <div class="map-responsive">
+          <div class="map" id="map"></div>
+        </div>
+        <!-- places list-->
+        <div class="places-container">
+          <div class="places-filter-container">
+            <input class="places-filter" type="text" placeholder="Type to filter shops" data-bind="{textInput:filterInput}">
+          </div>
+          <div class="places-list">
+             <ul class="multi-column" data-bind="foreach: filterShops">
+              <li>
+                <a href="#" data-bind="{text:properties.title, click:$parent.showThisMarker, css: $parent.currrentShopId()==id ? 'active': '' }"></a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </article>
     <script src="vendor/jQuery/jquery-3.2.1.min.js"></script>
-    <script src="vendor/proper/popper.min.js"></script>
-    <script src="vendor/bootstrap-4.0.0/js/bootstrap.min.js"></script>
-    <script src="vendor/fontawesome/all.js"></script>
     <script src="vendor/Knockout/knockout-3.4.2.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAdyV04KnXdTkVzs-5acrHvr04BKFD96bQ&libraries=places&language=en"></script>
     <script src="js/map_canvas.js"></script>
