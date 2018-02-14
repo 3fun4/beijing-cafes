@@ -44,7 +44,9 @@ var MAP_CANVAS = MAP_CANVAS || (function() {
 			//resize infowindow
 			if (isInfoWindowOpen()) {
 				console.log('resizing infowindow');
+				var content = _INFO_WINDOW.getContent();
 				_INFO_WINDOW.close();
+				_INFO_WINDOW.setContent(content);
 				_INFO_WINDOW.open(_MAP, _CLICKED_MARKER);
 			}
 		});
@@ -98,8 +100,11 @@ var MAP_CANVAS = MAP_CANVAS || (function() {
 				infoHTML_links += ` <a target = "_blank" href = "${url}"  title = "${url}"><img src = "${baseUrl}/favicon.ico" style = "width:16px;height:16px;" ></a>`;
 			}
 		}
-		var infoHTML = `<div class="card">
-							<div class="card-body">
+		var infoHTML = `<div>
+							<div class="info-card-img">
+								<img src="${feature.getProperty('url_image')}">
+							</div>
+							<div class="info-card-txt">
 								<h6>${feature.getProperty('title')}</h6>
 								<p><i class="fa fa-map-marker-alt"></i> ${feature.getProperty('address')}</p>
 								${infoHTML_openhours}

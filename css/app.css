@@ -107,7 +107,7 @@ h2{
 /**
  * info window image thumbnail
  */
-.info-card {
+.info-card-img {
   display: block;
   width: 100%;
   position: relative;
@@ -115,7 +115,7 @@ h2{
   padding: 56.25% 0 0 0;
   overflow: hidden;
 }
-.info-card img {
+.info-card-img img {
   position: absolute;
   display: block;
   max-width: 100%;
@@ -126,8 +126,8 @@ h2{
   bottom: 0;
   margin: auto;
 }
-.card-body h6,
-.card-body p {
+.info-card-txt h6,
+.info-card-txt p {
   color: var(--main-font-color);
   max-width: 200px;
 }
