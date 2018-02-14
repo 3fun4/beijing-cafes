@@ -2,10 +2,9 @@
   --main-font-color: #2B323C;
   --main-border-color:#EFEFEF;
   --map-height: 500px;
-  --map-height-sm: 250px;
-  --multi-column-columns:3;
-  --column-width:200px;
-  --column-gap:20px;
+  --places-columns:3;
+  --places-column-width:200px;
+  --places-column-gap:20px;
 }
 
 /** {
@@ -48,7 +47,7 @@ h2{
   padding-left: 10px;
 }
 .places-filter {
-  width: var(--column-width);
+  width: var(--places-column-width);
   border: 1px solid var(--main-border-color);
   border-radius: 3px;
   font-size: 1.125em;
@@ -57,24 +56,24 @@ h2{
 .places-list {
   padding-top: 10px;
   padding-left: 10px;
-  padding-bottom: 20px;
+  padding-bottom: 10px;
 }
 .multi-column {
   list-style-type: none;
   margin: 0;
   padding: 0;
 
-  columns: var(--multi-column-columns);
-  column-width: var(--column-width);
-  column-gap: var(--column-gap);
+  columns: var(--places-columns);
+  column-width: var(--places-column-width);
+  column-gap: var(--places-column-gap);
   /* Chrome, Safari, Opera */
-  -webkit-columns: var(--multi-column-columns);
-  -webkit-column-width: var(--column-width);
-  -webkit-column-gap: var(--column-gap);
+  -webkit-columns: var(--places-columns);
+  -webkit-column-width: var(--places-column-width);
+  -webkit-column-gap: var(--places-column-gap);
   /* Firefox */
-  -moz-columns: var(--multi-column-columns);
-  -moz-column-width: var(--column-width);
-  -moz-column-gap: var(--column-gap);
+  -moz-columns: var(--places-columns);
+  -moz-column-width: var(--places-column-width);
+  -moz-column-gap: var(--places-column-gap);
 
 }
 .multi-column li {
