@@ -88,7 +88,7 @@ var MAP_CANVAS = MAP_CANVAS || (function() {
 		//info window html
 		var infoHTML_openhours = '';
 		if (feature.getProperty('open_hours') && feature.getProperty('open_hours') != '') {
-			infoHTML_openhours = `<p style="width: 250px;"><i class="far fa-clock"></i> ${feature.getProperty('open_hours')}</p>
+			infoHTML_openhours = `<p><i class="far fa-clock"></i> ${feature.getProperty('open_hours')}</p>
 										`;
 		}
 		var infoHTML_links = '<p><i class="fa fa-link"></i> ';
