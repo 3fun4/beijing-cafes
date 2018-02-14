@@ -16,6 +16,7 @@ This project displays some of the coffee shops in Beijing using Google Maps API.
 ## Resources
 * [jQuery](http://jquery.com/)
 * [Font Awesome](https://fontawesome.com/)
+* [SweetAlert2](https://github.com/sweetalert2/sweetalert2)
 * [Knockout.js](#)
 * [Google Maps API](#)
 * [Map Icons Collection](https://mapicons.mapsmarker.com/)
