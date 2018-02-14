@@ -43,7 +43,6 @@ var MAP_CANVAS = MAP_CANVAS || (function() {
 			_MAP.setCenter(center);
 			//resize infowindow
 			if (isInfoWindowOpen()) {
-				console.log('resizing infowindow');
 				var content = _INFO_WINDOW.getContent();
 				_INFO_WINDOW.close();
 				_INFO_WINDOW.setContent(content);
