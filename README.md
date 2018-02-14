@@ -6,12 +6,12 @@ This project displays some of the coffee shops in Beijing using Google Maps API.
 * Download the .zip file or clone this repository to your computer
 * Install an HTTP server, e.g.: [Apache Tomcat](http://tomcat.apache.org/)
 * Run the HTTP server and deploy this project to the server
-* Visit http://[host-server-ip]:[host-server-port]/beijing-cafes in a web browser
+* Visit http://[host-server-ip]:[host-server-port]/beijing-coffee-shops in a web browser
 
 ## Platform Tested
-* Window 10 Chrome, Firefox
-* iPad Pro 10" Chrome
-* iPhone 7 Chrome
+* Window 10: Chrome, Firefox
+* iPad Pro 10": Chrome
+* iPhone 7: Chrome
 
 ## Resources
 * [jQuery](http://jquery.com/)

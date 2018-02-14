@@ -3,19 +3,12 @@
  * ajax request error handler
  */
 $(document).ajaxError(function(event, jqxhr, settings, error) {
-	var err_alert = `
-                  <div class="alert alert-danger alert-dismissible fade show" role="alert" style="left:300px;">
-                    <h6>app error</h6>
-                    <hr>
-                    <p>
-                      [${jqxhr.status}][${jqxhr.statusText}] <a href="#" class="alert-link">${settings.url}</a>
-                    </p>
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  `;
-	$('#msg').append(err_alert);
+	var err_text = `[${jqxhr.status}] ${settings.url}`;
+	swal({
+		type: 'error',
+		title: jqxhr.statusText,
+		text: err_text
+	})
 });
 
 //places GeoJSON file url
