@@ -14,7 +14,7 @@ This project displays some of the coffee shops in Beijing using Google Maps API.
 * iPhone 7 Chrome
 
 ## Resources
-* jQuery
+* [jQuery](http://jquery.com/)
 * [Font Awesome](https://fontawesome.com/)
 * [Knockout.js](#)
 * [Google Maps API](#)
