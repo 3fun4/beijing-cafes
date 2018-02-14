@@ -1,17 +1,16 @@
 :root {
   --main-font-color: #2B323C;
   --main-border-color:#EFEFEF;
-  --map-height:550px;
-  --places-container-height:300px;
-  --places-list-width:800px;
+  --map-height: 550px;
   --multi-column-columns:3;
   --column-width:200px;
   --column-gap:20px;
 }
 
-*{
+* {
   box-sizing: border-box;
 }
+
 html, body {
   height: 100%;
   margin: 0;
@@ -21,12 +20,12 @@ h2{
   color: var(--main-font-color);
 }
 /**
-* responsive map
+* map
 */
-.map-responsive{
+.map-responsive {
   border: 1px solid var(--main-border-color);
 }
-.map{
+.map {
   display:block;
   width:100%;
   height:var(--map-height);
@@ -37,27 +36,27 @@ h2{
 /*
  * places list
  */
-.places-container{
+.places-container {
   background-color: #F9FAFA;
   border: 1px solid var(--main-border-color);
-  height: var(--places-container-height);
   position: relative;
+  clear: both;
 }
-.places-filter-container{
+.places-filter-container {
   padding-top: 10px;
   padding-left: 10px;
 }
-.places-filter{
+.places-filter {
   width: var(--column-width);
   border: 1px solid var(--main-border-color);
   border-radius: 3px;
-  font-size: 1em;
+  font-size: 1rem;
 }
-.places-list{
+.places-list {
   padding-top: 10px;
   padding-left: 10px;
 }
-.multi-column{
+.multi-column {
   list-style-type: none;
   margin: 0;
   padding: 0;
@@ -75,13 +74,13 @@ h2{
   -moz-column-gap: var(--column-gap);
 
 }
-.multi-column li{
+.multi-column li {
   height: 20px;
   font-size: .75rem;
   font-weight: 500;
 }
 
-.places-list a::before{
+.places-list a::before {
   display: inline-block;
   font-style: normal;
   font-variant: normal;
@@ -100,9 +99,6 @@ h2{
   text-decoration: none;
   color: var(--main-font-color);
 }
-.places-list a.active {
-  color: #007bff;
-}
 .places-list a:hover .feather,
 .places-list a.active .feather {
   color: inherit;
@@ -111,18 +107,15 @@ h2{
 /**
  * info window image thumbnail
  */
-.info-card
-{
+.info-card {
   display: block;
   width: 100%;
   position: relative;
   height: 0;
   padding: 56.25% 0 0 0;
   overflow: hidden;
-
 }
-.info-card img
-{
+.info-card img {
   position: absolute;
   display: block;
   max-width: 100%;
@@ -133,16 +126,10 @@ h2{
   bottom: 0;
   margin: auto;
 }
-.card-body h6, .card-body p{
+.card-body h6,
+.card-body p {
   color: var(--main-font-color);
 }
 .card-body p {
   width: 250px;
-}
-
-/**
-* Bootstrap alert: fit to its content
-*/
-.alert{
-  display: inline-block;
 }
