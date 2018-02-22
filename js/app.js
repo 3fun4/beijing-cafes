@@ -3,12 +3,14 @@
  * ajax request error handler
  */
 $(document).ajaxError(function(event, jqxhr, settings, error) {
+	event.preventDefault();
 	var err_text = `[${jqxhr.status}] ${settings.url}`;
 	swal({
 		type: 'error',
 		title: jqxhr.statusText,
-		text: err_text
-	})
+		text: err_text,
+		allowOutsideClick: false
+	});
 });
 
 //places GeoJSON file url

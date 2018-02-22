@@ -12,9 +12,8 @@
 }*/
 
 html, body {
-  height: 100%;
   margin: 0;
-  padding: 0;
+  padding: 0 !important;
 }
 h2{
   color: var(--main-font-color);
@@ -57,7 +56,9 @@ h2{
   padding-top: 10px;
   padding-left: 10px;
   padding-bottom: 10px;
-}
+/*max-height: 10%;
+overflow-y: auto;
+*/}
 .multi-column {
   list-style-type: none;
   margin: 0;
