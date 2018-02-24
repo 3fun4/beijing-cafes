@@ -105,11 +105,13 @@ var MAP_CANVAS = MAP_CANVAS || (function() {
 				infoHTML_links += ` <a target = "_blank" href = "${url}"  title = "${url}"><img src = "${baseUrl}/favicon.ico" style = "width:16px;height:16px;" ></a>`;
 			}
 		}
-
+		/*`<div id="img_${feature.getId()}" class="info-card-img">
+								<img src="${feature.getProperty('url_image')}">
+							</div>`*/
 		var infoHTML = `<div>
-							<div class="info-card-img">
-								<img id="img_${feature.getId()}" src="${feature.getProperty('url_image')}">
-							</div>
+							<div id="slide_${feature.getId()}" class="slideshow-container"></div>
+							<br>
+							<div id="slide_dot_${feature.getId()}" style="text-align:center"></div>
 							<div class="info-card-txt">
 								<h6>${feature.getProperty('title')}</h6>
 								<p><i class="fa fa-map-marker-alt"></i> ${feature.getProperty('address')}</p>
@@ -132,10 +134,19 @@ var MAP_CANVAS = MAP_CANVAS || (function() {
 		promise.then(function(data, textStatus, jqXHR) {
 			var photoURLs = FLICKR_API.getPhotoURLs(data);
 			if (photoURLs.length > 0) {
-				var test1 = photoURLs[0];
-				$('#' + imgElmtId).attr('src', test1);
+				$.each(photoURLs, function(index, photoURL) {
+					var slide = `<div class="mySlides fade">
+								  <div class="numbertext">${index+1} / ${photoURLs.length}</div>
+								  <img src="${photoURL}" style="width:100%">
+								</div>`;
+					$('#slide_' + imgElmtId).append(slide);
+					$('#slide_dot_' + imgElmtId).append(`<span class="dot" onclick="currentSlide(${index+1})"></span>`);
+				});
+				$('#slide_' + imgElmtId).append('<a class="prev" onclick="plusSlides(-1)">&#10094;</a><a class="next" onclick="plusSlides(1)">&#10095;</a>');
+				showSlides(1);
 			}
 		});
+
 	};
 	/**
 	 * render the map with custom places
@@ -178,7 +189,7 @@ var MAP_CANVAS = MAP_CANVAS || (function() {
 				//change marker icon
 				setClickedMarker(marker);
 				//load flickr photos
-				loadFlickrPhotos(feature.getProperty('title'), 'img_' + feature.getId());
+				loadFlickrPhotos(feature.getProperty('title'), feature.getId());
 
 			});
 			// save the info we need to use later for the side_bar click event

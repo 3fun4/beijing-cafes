@@ -38,7 +38,7 @@ var FLICKR_API = FLICKR_API || (function() {
 		if (data.stat === 'ok') {
 			console.log(data.photos);
 			$.each(data.photos.photo, function(index, photo) {
-				var photoURL = `https://farm${photo.farm}.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}_m.jpg`;
+				var photoURL = `https://farm${photo.farm}.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}_q.jpg`;
 				photoURLs.push(photoURL);
 			});
 		} else if (data.stat === 'fail') {
