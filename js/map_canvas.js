@@ -44,6 +44,7 @@ var MAP_CANVAS = MAP_CANVAS || (function() {
 			//resize infowindow
 			if (isInfoWindowOpen()) {
 				var content = _INFO_WINDOW.getContent();
+				console.log(content);
 				_INFO_WINDOW.close();
 				_INFO_WINDOW.setContent(content);
 				_INFO_WINDOW.open(_MAP, _CLICKED_MARKER);
@@ -120,7 +121,53 @@ var MAP_CANVAS = MAP_CANVAS || (function() {
 							</div>
 						</div>
 						`;
+
+		/*		var infoHTML = '<div>';
+				var infoHTML_slide = '';
+				var infoHTML_slide_dot = '';
+
+				var title = feature.getProperty('title');
+				var searchText = title.replace(/\([^\)]*\)/g, "");
+				var promise = FLICKR_API.searchPhotos(searchText.toLowerCase());
+				promise.then(function(data, textStatus, jqXHR) {
+					var photoURLs = FLICKR_API.getPhotoURLs(data);
+					if (photoURLs.length > 0) {
+						$.each(photoURLs, function(index, photoURL) {
+							var slide = `<div class="mySlides fade">
+										  <div class="numbertext">${index+1} / ${photoURLs.length}</div>
+										  <img src="${photoURL}" style="width:100%">
+										</div>`;
+							infoHTML_slide += slide;
+							infoHTML_slide_dot += `<span class="dot" onclick="currentSlide(${index+1})"></span>`;
+						});
+					}
+					console.log(infoHTML_slide);
+					console.log(infoHTML_slide_dot);
+					infoHTML += `
+								<div id="slide_${feature.getId()}" class="slideshow-container">
+									${infoHTML_slide}
+									<a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+									<a class="next" onclick="plusSlides(1)">&#10095;</a>
+								</div>
+								<br>
+								<div id="slide_dot_${feature.getId()}" style="text-align:center">
+									${infoHTML_slide_dot}
+								</div>
+								<div class="info-card-txt">
+									<h6>${feature.getProperty('title')}</h6>
+									<p><i class="fa fa-map-marker-alt"></i> ${feature.getProperty('address')}</p>
+									${infoHTML_openhours}
+									${infoHTML_links}
+								</div>
+							</div>
+							`;
+					console.log(infoHTML);
+
+					return infoHTML;
+				});*/
+
 		return infoHTML;
+
 	};
 	/**
 	 * load Flickr photos in infowindow
@@ -134,16 +181,29 @@ var MAP_CANVAS = MAP_CANVAS || (function() {
 		promise.then(function(data, textStatus, jqXHR) {
 			var photoURLs = FLICKR_API.getPhotoURLs(data);
 			if (photoURLs.length > 0) {
+				var infoHTML_slide = '';
+				var infoHTML_dot = '';
 				$.each(photoURLs, function(index, photoURL) {
-					var slide = `<div class="mySlides fade">
+					var slide = '';
+					var active = '';
+					var display = 'none';
+					if (index === 0) {
+						active = 'active';
+						display = 'block';
+					}
+					slide = `<div class="mySlides fade ${active}" style="display:${display};">
 								  <div class="numbertext">${index+1} / ${photoURLs.length}</div>
 								  <img src="${photoURL}" style="width:100%">
 								</div>`;
-					$('#slide_' + imgElmtId).append(slide);
-					$('#slide_dot_' + imgElmtId).append(`<span class="dot" onclick="currentSlide(${index+1})"></span>`);
+					//$('#slide_' + imgElmtId).append(slide);
+					//$('#slide_dot_' + imgElmtId).append(`<span class="dot  ${active}" onclick="currentSlide(${index+1})"></span>`);
+					infoHTML_slide += slide;
+					infoHTML_dot += `<span class="dot  ${active}" onclick="currentSlide(${index+1})"></span>`;
 				});
-				$('#slide_' + imgElmtId).append('<a class="prev" onclick="plusSlides(-1)">&#10094;</a><a class="next" onclick="plusSlides(1)">&#10095;</a>');
-				showSlides(1);
+				//$('#slide_' + imgElmtId).append('<a class="prev" onclick="plusSlides(-1)">&#10094;</a><a class="next" onclick="plusSlides(1)">&#10095;</a>');
+				infoHTML_slide += '<a class="prev" onclick="plusSlides(-1)">&#10094;</a><a class="next" onclick="plusSlides(1)">&#10095;</a>';
+				$('#slide_' + imgElmtId).html(infoHTML_slide);
+				$('#slide_dot_' + imgElmtId).html(infoHTML_dot);
 			}
 		});
 
@@ -188,9 +248,8 @@ var MAP_CANVAS = MAP_CANVAS || (function() {
 				_INFO_WINDOW.open(_MAP, marker);
 				//change marker icon
 				setClickedMarker(marker);
-				//load flickr photos
+				//TODO: //load flickr photos
 				loadFlickrPhotos(feature.getProperty('title'), feature.getId());
-
 			});
 			// save the info we need to use later for the side_bar click event
 			_MARKERS.push(marker);
@@ -239,7 +298,6 @@ var MAP_CANVAS = MAP_CANVAS || (function() {
 				var thisTitle = shop.id + '-' + feature.getProperty('title');
 				var markerToClick = getMarker(thisTitle);
 				google.maps.event.trigger(markerToClick, 'click');
-
 			}
 		});
 	};
@@ -280,3 +338,37 @@ var MAP_CANVAS = MAP_CANVAS || (function() {
 	return self;
 
 }());
+
+/**
+ *
+ */
+var slideIndex = 1;
+
+
+function plusSlides(n) {
+	showSlides(slideIndex += n);
+}
+
+function currentSlide(n) {
+	showSlides(slideIndex = n);
+}
+
+function showSlides(n) {
+	var i;
+	var slides = document.getElementsByClassName("mySlides");
+	var dots = document.getElementsByClassName("dot");
+	if (n > slides.length) {
+		slideIndex = 1
+	}
+	if (n < 1) {
+		slideIndex = slides.length
+	}
+	for (i = 0; i < slides.length; i++) {
+		slides[i].style.display = "none";
+	}
+	for (i = 0; i < dots.length; i++) {
+		dots[i].className = dots[i].className.replace(" active", "");
+	}
+	slides[slideIndex - 1].style.display = "block";
+	dots[slideIndex - 1].className += " active";
+}
