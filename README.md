@@ -13,13 +13,16 @@ This project displays some of the coffee shops in Beijing using Google Maps API.
 * iPad Pro 10": Chrome
 * iPhone 7: Chrome
 
-## Resources
-* [jQuery](http://jquery.com/)
+## Resources and APIs
 * [Font Awesome](https://fontawesome.com/)
-* [SweetAlert2](https://github.com/sweetalert2/sweetalert2)
-* [Knockout.js](#)
-* [Google Maps API](#)
 * [Map Icons Collection](https://mapicons.mapsmarker.com/): [Coffee icon](https://mapicons.mapsmarker.com/markers/restaurants-bars/bars/coffee/?custom_color=5e3e18)
+
+* [jQuery](http://jquery.com/)
+* [Knockout.js](http://knockoutjs.com/)
+* [SweetAlert2](https://github.com/sweetalert2/sweetalert2)
+
+* [Google Maps API](https://developers.google.com/maps/)
+* [Flickr API](https://www.flickr.com/services/api/)
 
 ## References
 * [咖啡愛好者的首選，精選6家 北京獨立咖啡店](https://www.klook.com/zh-TW/blog/%E5%8C%97%E4%BA%AC%E7%8D%A8%E7%AB%8B%E5%92%96%E5%95%A1%E5%BA%97/)
