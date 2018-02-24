@@ -1,7 +1,7 @@
 'use strict';
 
 /**
- *
+ * Google Maps API
  */
 var MAP_CANVAS = MAP_CANVAS || (function() {
 
@@ -78,6 +78,14 @@ var MAP_CANVAS = MAP_CANVAS || (function() {
 		}
 		return baseUrl;
 	};
+	//去掉汉字
+	var removeChinese = function(strValue) {
+		if (strValue != null && strValue != "") {
+			var reg = /[\u4e00-\u9fa5]/g;
+			return strValue.replace(reg, "");
+		} else
+			return "";
+	};
 	/**
 	 * form info window html and return
 	 * @param feature google map feature
@@ -86,8 +94,7 @@ var MAP_CANVAS = MAP_CANVAS || (function() {
 	var getInfoWindowHTML = function(feature) {
 		var infoHTML_openhours = '';
 		if (feature.getProperty('open_hours') && feature.getProperty('open_hours') != '') {
-			infoHTML_openhours = `<p><i class="far fa-clock"></i> ${feature.getProperty('open_hours')}</p>
-										`;
+			infoHTML_openhours = `<p><i class="far fa-clock"></i> ${feature.getProperty('open_hours')}</p>`;
 		}
 		var infoHTML_links = '<p><i class="fa fa-link"></i> ';
 		var links = feature.getProperty('links');
@@ -98,9 +105,10 @@ var MAP_CANVAS = MAP_CANVAS || (function() {
 				infoHTML_links += ` <a target = "_blank" href = "${url}"  title = "${url}"><img src = "${baseUrl}/favicon.ico" style = "width:16px;height:16px;" ></a>`;
 			}
 		}
+
 		var infoHTML = `<div>
 							<div class="info-card-img">
-								<img src="${feature.getProperty('url_image')}">
+								<img id="img_${feature.getId()}" src="${feature.getProperty('url_image')}">
 							</div>
 							<div class="info-card-txt">
 								<h6>${feature.getProperty('title')}</h6>
@@ -111,6 +119,23 @@ var MAP_CANVAS = MAP_CANVAS || (function() {
 						</div>
 						`;
 		return infoHTML;
+	};
+	/**
+	 * load Flickr photos in infowindow
+	 * @param title {String} shop title
+	 * @param imgElmtId {String} image dom element id
+	 */
+	var loadFlickrPhotos = function(title, imgElmtId) {
+
+		var searchText = title.replace(/\([^\)]*\)/g, "");
+		var promise = FLICKR_API.searchPhotos(searchText.toLowerCase());
+		promise.then(function(data, textStatus, jqXHR) {
+			var photoURLs = FLICKR_API.getPhotoURLs(data);
+			if (photoURLs.length > 0) {
+				var test1 = photoURLs[0];
+				$('#' + imgElmtId).attr('src', test1);
+			}
+		});
 	};
 	/**
 	 * render the map with custom places
@@ -142,6 +167,7 @@ var MAP_CANVAS = MAP_CANVAS || (function() {
 				draggable: false,
 				animation: google.maps.Animation.DROP
 			});
+
 			//marker click event addListener
 			google.maps.event.addListener(marker, 'click', function() {
 
@@ -151,6 +177,9 @@ var MAP_CANVAS = MAP_CANVAS || (function() {
 				_INFO_WINDOW.open(_MAP, marker);
 				//change marker icon
 				setClickedMarker(marker);
+				//load flickr photos
+				loadFlickrPhotos(feature.getProperty('title'), 'img_' + feature.getId());
+
 			});
 			// save the info we need to use later for the side_bar click event
 			_MARKERS.push(marker);

@@ -51,7 +51,7 @@ function appViewModel() {
 
 $(document).ready(function() {
 
-	INSTAGRAM_API.test('soloistcoffee');
+
 
 	//load Geo data from JSON file
 	var request = $.ajax({
